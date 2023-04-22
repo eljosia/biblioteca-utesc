@@ -14,7 +14,13 @@ export default defineConfig({
                 // CSS
                 'resources/sass/app.scss',
                 // JS
+                'resources/js/jquery.min.js',
                 'resources/js/app.js',
+                'resources/js/datatables/jquery.dataTables.min.js', 
+                'resources/js/datatables/dataTables.min.js',
+
+                // PAGES
+                'resources/js/pages/books/index.js',
             ],
             refresh: true,
         }),

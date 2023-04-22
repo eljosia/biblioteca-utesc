@@ -56,8 +56,9 @@
     </div>
 
     {{-- SCRIPTS --}}
-    @vite(['resources/js/app.js'])
-    
+    @vite(['resources/js/jquery.min.js','resources/js/app.js'])
+    @vite(['resources/js/datatables/jquery.dataTables.min.js', 'resources/js/datatables/dataTables.min.js'])
+
     @yield('scripts')
 </body>
 

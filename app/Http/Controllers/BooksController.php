@@ -17,7 +17,7 @@ class BooksController extends Controller
         if($r->search):
 
         else:
-            $book = Book::join('classification as cl', 'cl.id','books.classification_id')->get();
+            $book = Book::join('classifications as cl', 'cl.id','books.classification_id')->get();
         endif;
 
         return $book;
