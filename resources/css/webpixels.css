@@ -1,4 +1,20 @@
+
+*::before,
+*::after {
+    border: 0 solid var(--utesc-color);
+}
+
+.display-fc {
+    display: flex;
+    justify-content: center;
+}
+.display-fb {
+    display: flex;
+    justify-content: space-between;
+}
+
 :root {
+    --utesc-color: #3BBBA8;
     --x-red-danger-1: #DC4C64;
     --x-red-danger-2: #ee6c82;
     --x-gray-50: #FAFAFA;
