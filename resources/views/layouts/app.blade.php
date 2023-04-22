@@ -49,9 +49,7 @@
             <main class="py-10 px-3 px-lg-7 ">
                 <!-- Container -->
                 <div class="container-xl">
-                    <div class="row">
-                        @yield('content')
-                    </div>
+                    @yield('content')
                 </div>
             </main>
         </div>
@@ -59,6 +57,8 @@
 
     {{-- SCRIPTS --}}
     @vite(['resources/js/app.js'])
+    
+    @yield('scripts')
 </body>
 
 </html>
