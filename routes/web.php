@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BooksController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +21,13 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::middleware([
+    'auth'
+])->group(function () {
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard.index');
 
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard.index');
+    // Libros
+    Route::get('/libros', [BooksController::class, 'index'])->name('book.index');
+});
+
+

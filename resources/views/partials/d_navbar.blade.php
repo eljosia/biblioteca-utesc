@@ -36,7 +36,7 @@
                     <div class="collapse show" id="collapseNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link ps-18 ps-lg-10" href="*">
+                                <a class="nav-link ps-18 ps-lg-10" href="{{route('book.index')}}">
                                     <i class="fa-solid fa-book"></i> Todos los Libros
                                 </a>
                             </li>

@@ -29,7 +29,7 @@ return new class extends Migration
             $table->boolean('status')->nullable();
             $table->unsignedBigInteger('created_by')->nullable()->default(1);
             $table->unsignedBigInteger('updated_by')->nullable();
-            $table->unsignedBigInteger('clasification_id')->nullable();
+            $table->unsignedBigInteger('classification_id')->nullable();
             $table->date('date_of_acq');
 
             $table->foreign('created_by')->references('id')->on('users');
