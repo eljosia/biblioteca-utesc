@@ -12,35 +12,33 @@
     <div class="row">
         <div class="col-12">
             <div class="card shadow p-5">
-                <div class="text-center h3 my-4">
-                   Todos los libros
+                <div class="card-body">
+                    <table class="table table-striped table-hover table-sm" id="books-table" data-url="{{ $data->loadbook }}">
+                        <thead>
+                            <tr>
+                                <th>Titulo</th>
+                                <th>Folio</th>
+                                <th>ISBN</th>
+                                <th>Autor</th>
+                                <th>Editorial</th>
+                                <th>Area</th>
+                                <th>Cantidad</th>
+                                <th>Edicion</th>
+                                <th>Pais</th>
+                                <th>Páginas</th>
+                                <th>Estante</th>
+                                <th>Clasificación</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
-
-                <table class="table table-striped table-hover table-sm" id="books-table">
-                    <thead>
-                        <tr>
-                            <th>Titulo</th>
-                            <th>Folio</th>
-                            <th>ISBN</th>
-                            <th>Autor</th>
-                            <th>Editorial</th>
-                            <th>Area</th>
-                            <th>Cantidad</th>
-                            <th>Edicion</th>
-                            <th>Pais</th>
-                            <th>Páginas</th>
-                            <th>Estante</th>
-                            <th>Clasificación</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                </table>
-
             </div>
         </div>
     </div>
 @endsection
 
 @section('scripts')
-@vite(['resources/js/pages/books/index.js'])
+    @vite(['resources/js/pages/books/index.js'])
+
 @endsection

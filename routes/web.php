@@ -28,6 +28,7 @@ Route::middleware([
 
     // Libros
     Route::get('/libros', [BooksController::class, 'index'])->name('book.index');
+    Route::get('/libro/editar/{id?}', [BooksController::class, 'edit'])->name('book.edit');
 });
 
 

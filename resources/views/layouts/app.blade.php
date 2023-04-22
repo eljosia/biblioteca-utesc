@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="data-user" content="{{ jcrypt(Auth::id()) }}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -16,7 +17,8 @@
 
     <!-- CSS -->
     @vite(['resources/sass/app.scss'])
-
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/fixedcolumns/3.3.3/css/fixedColumns.dataTables.min.css">
 </head>
 
 <body class="bg-white">
@@ -56,9 +58,8 @@
     </div>
 
     {{-- SCRIPTS --}}
-    @vite(['resources/js/jquery.min.js','resources/js/app.js'])
+    @vite(['resources/js/jquery.min.js', 'resources/js/app.js'])
     @vite(['resources/js/datatables/jquery.dataTables.min.js', 'resources/js/datatables/dataTables.min.js'])
-
     @yield('scripts')
 </body>
 
