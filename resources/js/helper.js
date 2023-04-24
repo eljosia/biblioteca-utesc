@@ -25,6 +25,7 @@ export function toast(msg, icon = 'success') {
     toastr[icon](msg)
 
 }
+
 export function getPetition(path, params, type = 'POST', async = true) {
     return new Promise((resolve, reject) => {
         let token = $('meta[name="csrf-token"]').attr('content');
@@ -63,50 +64,102 @@ export function getPetition(path, params, type = 'POST', async = true) {
         });
     });
 }
+
 export function sendform(id) {
     return new Promise(function (resolve, reject) {
-      var idform = id;
-      var url = $(idform).attr('action');
-      var errors = document.querySelectorAll('.error');
-      var submit = $('button[type=submit]', idform);
-      var textSubmit = submit.html();
-      let user_id = $('meta[name="data-user"]').attr('content');
-  
-      $('.error').text('');
-  
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-      let formData = new FormData(idform);
-      formData.append('by_user_id', user_id);
-  
-      $.ajax({
-        type: 'POST',
-        url: url,
-        data: formData,
-        processData: false, // tell jQuery not to process the data
-        contentType: false, // tell jQuery not to set contentType,
-        success: function (data) {
-          resolve(data);
-        },
-        error: (err) => {
-          if (err.status == 422) {
-            if (err.message)
-              toast(err.message, 'warning');
-          } else if (err.status == 404) {
-            toast('No se encuentra el ID', 'error');
-          } else {
-            reject(err);
-          }
-        },
-        beforeSend: function () {
-          submit.html('<i class="fas fa-spinner fa-spin"></i>');
-        },
-        complete: function () {
-          submit.html(textSubmit);
-        }
-      });
+        var idform = id;
+        var url = $(idform).attr('action');
+        var errors = document.querySelectorAll('.error');
+        var submit = $('button[type=submit]', idform);
+        var textSubmit = submit.html();
+        let user_id = $('meta[name="data-user"]').attr('content');
+
+        $('.error').text('');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        let formData = new FormData(idform);
+        formData.append('by_user_id', user_id);
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            processData: false, // tell jQuery not to process the data
+            contentType: false, // tell jQuery not to set contentType,
+            success: function (data) {
+                resolve(data);
+            },
+            error: (err) => {
+                if (err.status == 422) {
+                    if (err.message)
+                        toast(err.message, 'warning');
+                } else if (err.status == 404) {
+                    toast('No se encuentra el ID', 'error');
+                } else {
+                    reject(err);
+                }
+            },
+            beforeSend: function () {
+                submit.html('<i class="fas fa-spinner fa-spin"></i>');
+            },
+            complete: function () {
+                submit.html(textSubmit);
+            }
+        });
     })
-  }
+}
+
+export function swalert(title, msg, icon = 'success') {
+    Swal.fire(
+        title,
+        msg,
+        icon
+    )
+}
+
+export function deledit_action() {
+    $(document).on('click', '[data-action]', function (e) {
+        e.preventDefault();
+
+        var $this = this;
+        var url = $($this).data('url');
+        var action = $($this).data('action');
+
+        switch (action) {
+            case "delete":
+                Swal.fire({
+                    title: '¿Estas seguro de eliminarlo?',
+                    text: "¡Una vez hecho esto, ya no es posible recuperarlo!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#f36',
+                    cancelButtonColor: '#cfd6df',
+                    confirmButtonText: 'Confirmar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        getPetition(url, {}, 'DELETE', false).then(data => {
+                            if (data.success == true) {
+                                toast(data.msg);
+                                if (data.action) {
+                                    location.href = data.action;
+                                } else {
+                                    $(`#${data.table_id}`).DataTable().ajax.reload();
+                                }
+                            } else {
+                                toast("Ops...", 'Ha ocurrido un error');
+                                console.log(data)
+                            }
+                        });
+                    }
+                })
+                break;
+            case "edit":
+                location.href = url;
+                break;
+        }
+    })
+}

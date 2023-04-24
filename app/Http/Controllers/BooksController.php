@@ -142,4 +142,15 @@ class BooksController extends Controller
             return response()->json(array('success' => false, 'msg' => 'Se ha producido un error al guardar el libro'));
         }
     }
+
+    public function delete(Request $r)
+    {
+        $book_id = $r->id;
+        $book = Book::findOrFail($book_id);
+        $book->delete();
+        $msg = "Se ha borrado el libro correctamente.";
+
+        saveLog('Book', 'delete', $msg, $r->all(), $r->ip(), jdecrypt($r->by_user_id), $book_id);
+        return response()->json(array('success' => true, 'msg' => $msg, 'table_id' => 'books-table'));
+    }
 }

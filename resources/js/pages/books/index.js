@@ -69,7 +69,7 @@ $(document).ready(function () {
             render: function (data, type, row, meta) {
                 return `
             <a href="${row.edit_url}" class="btn btn-success btn-xs rounded-circle"><i class="fa-solid fa-pen-to-square"></i></a>
-            <button data-url="${row.delete_url}" class="btn btn-danger btn-xs rounded-circle"><i class="fa-solid fa-trash"></i></button>
+            <button data-url="${row.delete_url}" data-action="delete" class="btn btn-danger btn-xs rounded-circle"><i class="fa-solid fa-trash"></i></button>
             `
             }
         },
@@ -127,3 +127,5 @@ $(document).ready(function () {
         book_table.ajax.url($('#book-filter').attr('action')).load();
     })
 });
+
+h.deledit_action();

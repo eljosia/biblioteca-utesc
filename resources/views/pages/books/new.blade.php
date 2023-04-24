@@ -39,11 +39,13 @@
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Adquisición:</label>
                                     <input type="date" class="form-control inp" value="{{\Carbon\Carbon::now()->format('Y-m-d')}}" name="date_of_acq">
+                                    <span class="error text-danger font-bold" data-name="date_of_acq"></span>
                                 </div>
         
                                 <div class="col-12 col-md-8 p-1">
                                     <label for="" class="form-label">Titulo:</label>
                                     <input type="text" class="form-control inp" required name="title">
+                                    <span class="error text-danger font-bold" data-name="title"></span>
                                 </div>
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Autor:</label>
