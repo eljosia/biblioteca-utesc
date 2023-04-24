@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Classification;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -107,35 +108,38 @@ class BooksController extends Controller
         }
 
         $book_id = $r->book_id;
-        if (!$book_id):
-            $book   = new Book();
-            $action = "new";
+        if (!$book_id) :
+            $book       = new Book();
+            $action     = "new";
+            $msg        = "Se agregó el libro: " . $book->title;
+            $success    = true;
         endif;
 
-        $book->folio                = $r->folio;
-        $book->isbn                 = $r->isbn;
-        $book->title                = $r->title;
-        $book->autor                = $r->autor;
-        $book->description          = $r->description;
-        $book->editorial            = $r->editorial;
-        $book->area                 = $r->area;
-        $book->quantity             = $r->quantity;
-        $book->edition              = $r->edition;
-        $book->country              = $r->country;
-        $book->date_of_pub          = $r->date_of_pub;
-        $book->pages                = $r->pages;
-        $book->shelf                = $r->shelf;
-        $book->status               = 1;
-        $book->created_by           = jdecrypt($r->by_user_id);
-        $book->classification_id    = $r->classification;
-        $book->date_of_acq          = $r->date_of_acq;
-        $saved = $book->save();
+        try {
+            $book->folio                = $r->folio;
+            $book->isbn                 = $r->isbn;
+            $book->title                = $r->title;
+            $book->autor                = $r->autor;
+            $book->description          = $r->description;
+            $book->editorial            = $r->editorial;
+            $book->area                 = $r->area;
+            $book->quantity             = $r->quantity;
+            $book->edition              = $r->edition;
+            $book->country              = $r->country;
+            $book->date_of_pub          = Carbon::createFromDate($r->date_of_pub);
+            $book->pages                = $r->pages;
+            $book->shelf                = $r->shelf;
+            $book->status               = 1;
+            $book->created_by           = jdecrypt($r->by_user_id);
+            $book->classification_id    = $r->classification;
+            $book->date_of_acq          = Carbon::createFromFormat('Y-m-d H:i:s', $r->date_of_acq . ' 00:00:00');
+            $book->save();
 
-        if ($saved){
-            $msg        = "Se agregó el libro: " .$book->title;
-            $success    = true;
+            saveLog('Book', 'save', $msg, $r->all(), $r->ip(), jdecrypt($r->by_user_id), $book->id);
+            return response()->json(array('success' => $success, 'msg' => $msg, 'action' => $action));
+        } catch (Exception $e) {
+            saveLog('Book', 'save', $e->getMessage(), $r->all(), $r->ip(), jdecrypt($r->by_user_id));
+            return response()->json(array('success' => false, 'msg' => 'Se ha producido un error al guardar el libro'));
         }
-
-        return response()->json(array('success' => $success, 'msg' => $msg, 'action' => $action));
     }
 }

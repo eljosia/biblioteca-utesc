@@ -1,4 +1,7 @@
 <?php
+
+use App\Http\Controllers\ActivityLogController;
+use App\Models\ActivityLog;
 use Illuminate\Support\Str;
 
 function image($nombre)
@@ -35,4 +38,10 @@ function jdecrypt($ciphertext)
 function toSqlQuery($query)
 {
     return Str::replaceArray('?', $query->getBindings(), $query->toSql());
+}
+
+function saveLog($model, $event, $message, $request, $ip = '1.1.1.1', $user = 1, $model_id = null)
+{
+    ActivityLogController::save($model, $model_id, $event, $message, json_encode($request), $ip, $user);
+    return $message;
 }

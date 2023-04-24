@@ -18,7 +18,7 @@ $('#form-save-books').on('submit', function (e) {
     h.sendform(idform).then(data => {
         if (data.success == true) {
             h.toast(data.msg);
-            if (data.action == 'new') { $(idform)[0].reset(); }
+            if (data.action == 'new') { $(idform)[0].reset(); $('#previewimg').html('')}
             else {
                 location.reload
             }
