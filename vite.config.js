@@ -22,6 +22,7 @@ export default defineConfig({
 
                 // PAGES
                 'resources/js/pages/books/index.js',
+                'resources/js/pages/books/new.js',
             ],
             refresh: true,
         }),

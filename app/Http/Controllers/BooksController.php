@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Classification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -71,12 +72,20 @@ class BooksController extends Controller
 
         if ($dates) :
             $date        = explode(' - ', $dates);
-            $first_date     = Carbon::createFromFormat('d/m/Y',$date[0]);
-            $second_date    = Carbon::createFromFormat('d/m/Y',$date[1]);
+            $first_date     = Carbon::createFromFormat('d/m/Y', $date[0]);
+            $second_date    = Carbon::createFromFormat('d/m/Y', $date[1]);
 
             $data->books->whereBetween('date_of_acq', [$first_date, $second_date]);
         endif;
 
         return response()->json(array('books' => $data->books->get(), 'count' => $data->books->count(), 'sql' => toSqlQuery($data->books)));
+    }
+
+    public function new()
+    {
+        $data = (object)[];
+        $data->classifications = Classification::all();
+
+        return view('pages.books.new', compact('data'));
     }
 }
