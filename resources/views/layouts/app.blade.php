@@ -19,6 +19,8 @@
     @vite(['resources/sass/app.scss'])
     <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/fixedcolumns/3.3.3/css/fixedColumns.dataTables.min.css">
+    @vite(['resources/css/loader.css'])
+    @yield('css')
 </head>
 
 <body class="bg-white">

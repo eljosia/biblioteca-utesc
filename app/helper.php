@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Str;
+
 function image($nombre)
 {
     return asset('images/' . $nombre);
@@ -28,4 +30,9 @@ function jdecrypt($ciphertext)
     if (hash_equals($hmac, $calcmac)) {
         return $original_plaintext;
     }
+}
+
+function toSqlQuery($query)
+{
+    return Str::replaceArray('?', $query->getBindings(), $query->toSql());
 }

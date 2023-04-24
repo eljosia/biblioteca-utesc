@@ -13,10 +13,11 @@ export default defineConfig({
             input: [
                 // CSS
                 'resources/sass/app.scss',
+                'resources/css/loader.css',
                 // JS
                 'resources/js/jquery.min.js',
                 'resources/js/app.js',
-                'resources/js/datatables/jquery.dataTables.min.js', 
+                'resources/js/datatables/jquery.dataTables.min.js',
                 'resources/js/datatables/dataTables.min.js',
 
                 // PAGES
@@ -25,4 +26,7 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    optimizeDeps: {
+        exclude: ['js-big-decimal']
+    }
 });
