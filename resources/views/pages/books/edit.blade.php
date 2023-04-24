@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Nuevo Libro')
+@section('title', 'Editar Libro')
 @section('breadcrumb')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('book.index')}}">Libros</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Nuevo Libro</li>
+            <li class="breadcrumb-item"><a href="{{ route('book.index') }}">Libros</a></li>
+            <li class="breadcrumb-item">Editar</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ $book->title }}</li>
         </ol>
     </nav>
 @endsection
@@ -14,99 +15,95 @@
         <div class="col-12">
             <div class="card shadow p-5">
                 <div class="card-body">
-                    <h3 class="border-bottom pb-3"><i class="fa-solid fa-plus"></i> Agregar Nuevo Libro</h3>
+                    <h3 class="border-bottom pb-3"><i class="fa-solid fa-pen-to-square"></i> Editar: {{$book->title}}</h3>
+
                     <div class="row mt-5">
                         <div class="col-12 col-md-3 px-3">
                             <div class="display-fc" id="previewimg">
-        
+
                             </div>
                         </div>
                         <div class="col-12 col-md-9">
-                            <form action="{{route('book.save')}}" class="row" method="POST" id="form-save-books">
+                            <form action="{{ route('book.save') }}" class="row" method="POST" id="form-save-books">
+                                <input type="hidden" name="book_id" value="{{$book->id}}">
                                 <div class="col-12 col-md-4 p-1">
                                     <label for="" class="form-label">ISBN:</label>
                                     <div class="d-flex">
-                                        <input type="text" class="form-control inp" name="isbn" placeholder="ISBN">
-                                        <button class="btn btn-primary" id="searchbook"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                        <input type="text" class="form-control inp" name="isbn" placeholder="ISBN" value="{{$book->isbn}}">
+                                        <button class="btn btn-primary" id="searchbook"><i
+                                                class="fa-solid fa-magnifying-glass"></i></button>
                                     </div>
                                 </div>
-        
+
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">FOLIO:</label>
-                                    <input type="text" class="form-control inp" name="folio">
+                                    <input type="text" class="form-control inp" name="folio" value="{{$book->folio}}">
                                 </div>
-        
+
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Adquisición:</label>
-                                    <input type="date" class="form-control inp" value="{{\Carbon\Carbon::now()->format('Y-m-d')}}" name="date_of_acq">
+                                    <input type="date" class="form-control inp" name="date_of_acq" value="{{$book->date_of_acq}}">
                                     <span class="error text-danger font-bold" data-name="date_of_acq"></span>
                                 </div>
-        
+
                                 <div class="col-12 col-md-8 p-1">
                                     <label for="" class="form-label">Titulo:</label>
-                                    <input type="text" class="form-control inp" required name="title">
+                                    <input type="text" class="form-control inp" required name="title" value="{{$book->title}}">
                                     <span class="error text-danger font-bold" data-name="title"></span>
                                 </div>
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Autor:</label>
-                                    <input type="text" class="form-control inp" name="autor">
+                                    <input type="text" class="form-control inp" name="autor" value="{{$book->autor}}">
                                 </div>
                                 <div class="col-12 p-1">
                                     <label for="" class="form-label">Descripción: <small>(Opcional)</small></label>
-                                    <textarea class="form-control inp" rows="4" name="description"></textarea>
+                                    <textarea class="form-control inp" rows="4" name="description">{{$book->description}}</textarea>
                                 </div>
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Editorial:</label>
-                                    <input type="text" class="form-control inp" name="editorial">
+                                    <input type="text" class="form-control inp" name="editorial" value="{{$book->editorial}}">
                                 </div>
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Area:</label>
                                     <select class="form-control inp" name="area">
-                                        <option value="Agricultura">Agricultura</option>
-                                        <option value="Enfermería">Enfermería</option>
-                                        <option value="Gastronomía">Gastronomía</option>
-                                        <option value="Infantiles">Infantiles</option>
-                                        <option value="Mantenimiento">Mantenimiento</option>
-                                        <option value="Mecatrónica">Mecatrónica</option>
-                                        <option value="Otros">Otros</option>
-                                        <option value="Procesos Bioalimentarios">Procesos Bioalimentarios</option>
-                                        <option value="Tecnologías">Tecnologías</option>
-                                        <option value="Turismo">Turismo</option>
+                                        @foreach ($areas as $value => $label)
+                                            <option value="{{ $value }}" {{ $book->area == $value ? 'selected' : '' }}>{{ $label }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Cantidad:</label>
-                                    <input type="number" class="form-control inp" name="quantity">
+                                    <input type="number" class="form-control inp" name="quantity" value="{{$book->quantity}}">
                                 </div>
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Edición:</label>
-                                    <input type="text" class="form-control inp" name="edition">
+                                    <input type="text" class="form-control inp" name="edition" value="{{$book->edition}}">
                                 </div>
                                 <div class="col-4 col-md-4 p-1">
                                     <label for="" class="form-label">País</label>
-                                    <input type="text" class="form-control inp" name="country">
+                                    <input type="text" class="form-control inp" name="country" value="{{$book->country}}">
                                 </div>
                                 <div class="col-4 col-md-4 p-1">
                                     <label for="" class="form-label">Páginas</label>
-                                    <input type="number" class="form-control inp" name="pages">
+                                    <input type="number" class="form-control inp" name="pages" value="{{$book->pages}}">
                                 </div>
                                 <div class="col-4 col-md-4 p-1">
                                     <label for="" class="form-label">Estante</label>
-                                    <input type="number" class="form-control inp" name="shelf">
+                                    <input type="number" class="form-control inp" name="shelf" value="{{$book->shelf}}">
                                 </div>
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Clasificación</label>
-                                    <select class="form-control inp" data-live-search="true" name="classification">
-                                        @foreach($data->classifications as $class)
-                                        <option value="{{$class->id}}">{{$class->theme}}</option>
+                                    <select class="form-control inp" data-live-search="true" name="classification" value="{{$book->classification_id}}">
+                                        @foreach (\App\Models\Classification::all() as $class)
+                                            <option value="{{ $class->id }}" {{($class->id === $book->classification_id) ? 'selected' : ''}}>{{ $class->theme }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Fecha de Publicación</label>
-                                    <input type="text" class="form-control inp" name="date_of_pub">
+                                    <input type="text" class="form-control inp" name="date_of_pub" value="{{$book->date_of_pub}}">
                                 </div>
-        
+
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
@@ -120,5 +117,6 @@
 @endsection
 
 @section('scripts')
-@vite(['resources/js/pages/books/new.js'])
+    @vite(['resources/js/pages/books/new.js'])
+    @vite(['resources/js/pages/books/edit.js'])
 @endsection

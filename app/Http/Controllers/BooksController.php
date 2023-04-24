@@ -92,6 +92,26 @@ class BooksController extends Controller
         return view('pages.books.new', compact('data'));
     }
 
+    public function edit($id)
+    {
+        $book = Book::findOrFail($id);
+        $areas = [
+            'Agricultura' => 'Agricultura',
+            'Enfermería' => 'Enfermería',
+            'Gastronomía' => 'Gastronomía',
+            'Infantiles' => 'Infantiles',
+            'Mantenimiento' => 'Mantenimiento',
+            'Mecatrónica' => 'Mecatrónica',
+            'Otros' => 'Otros',
+            'Procesos Bioalimentarios' => 'Procesos Bioalimentarios',
+            'Tecnologías' => 'Tecnologías',
+            'Turismo' => 'Turismo',
+        ];
+
+        return view('pages.books.edit', compact('book', 'areas'));
+
+    }
+
     public function save(Request $r)
     {
         $validate = Validator::make($r->all(), [
@@ -109,10 +129,16 @@ class BooksController extends Controller
 
         $book_id = $r->book_id;
         if (!$book_id) :
-            $book       = new Book();
-            $action     = "new";
-            $msg        = "Se agregó el libro: " . $book->title;
-            $success    = true;
+            $book                       = new Book();
+            $action                     = "new";
+            $msg                        = "Se agregó el libro: " . $r->title;
+            $book->created_by           = jdecrypt($r->by_user_id);
+        else:
+            $book                       = Book::findOrFail($book_id);
+            $action                     = "reload";
+            $msg                        = "Se ha editado el libro: " . $book->title;
+            $book->updated_by           = jdecrypt($r->by_user_id);
+
         endif;
 
         try {
@@ -130,13 +156,12 @@ class BooksController extends Controller
             $book->pages                = $r->pages;
             $book->shelf                = $r->shelf;
             $book->status               = 1;
-            $book->created_by           = jdecrypt($r->by_user_id);
             $book->classification_id    = $r->classification;
             $book->date_of_acq          = Carbon::createFromFormat('Y-m-d H:i:s', $r->date_of_acq . ' 00:00:00');
             $book->save();
 
             saveLog('Book', 'save', $msg, $r->all(), $r->ip(), jdecrypt($r->by_user_id), $book->id);
-            return response()->json(array('success' => $success, 'msg' => $msg, 'action' => $action));
+            return response()->json(array('success' => true, 'msg' => $msg, 'action' => $action));
         } catch (Exception $e) {
             saveLog('Book', 'save', $e->getMessage(), $r->all(), $r->ip(), jdecrypt($r->by_user_id));
             return response()->json(array('success' => false, 'msg' => 'Se ha producido un error al guardar el libro'));
