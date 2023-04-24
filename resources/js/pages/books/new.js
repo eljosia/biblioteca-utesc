@@ -8,6 +8,32 @@ $('#searchbook').on('click', function (e) {
     searchBook(url, cover, searchbtn, isbn)
 })
 
+$('#form-save-books').on('submit', function (e) {
+    e.preventDefault();
+
+    var idform = this;
+    var errors = document.querySelectorAll('.error');
+    $('.error').text('');
+
+    h.sendform(idform).then(data => {
+        if (data.success == true) {
+            h.toast(data.msg);
+            if (data.action == 'new') { $(idform)[0].reset(); }
+            else {
+                location.reload
+            }
+
+        } else {
+            h.toast("Ops...", 'error');
+            console.log(data.errors)
+            errors.forEach(function (span) {
+                var name = $(span).data('name');
+                $(`[data-name="${name}"]`).text(data.errors[name])
+            })
+        }
+    })
+})
+
 async function searchBook(url, cover, searchbtn, isbn) {
     try {
         const response = await fetch(url);

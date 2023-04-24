@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div class="col-12 col-md-9">
-                            <form action="#" class="row" method="POST" id="form-savelibros">
+                            <form action="{{route('book.save')}}" class="row" method="POST" id="form-save-books">
                                 <div class="col-12 col-md-4 p-1">
                                     <label for="" class="form-label">ISBN:</label>
                                     <div class="d-flex">

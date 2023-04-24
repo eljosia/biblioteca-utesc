@@ -7,7 +7,9 @@ use App\Models\Classification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class BooksController extends Controller
 {
@@ -87,5 +89,53 @@ class BooksController extends Controller
         $data->classifications = Classification::all();
 
         return view('pages.books.new', compact('data'));
+    }
+
+    public function save(Request $r)
+    {
+        $validate = Validator::make($r->all(), [
+            'title'         => 'required|string|max:250',
+            'date_of_acq'   => 'required|date',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json(array(
+                'success' => false,
+                'msg'     => 'Ops...',
+                'errors'  => $validate->getMessageBag()->toArray()
+            ));
+        }
+
+        $book_id = $r->book_id;
+        if (!$book_id):
+            $book   = new Book();
+            $action = "new";
+        endif;
+
+        $book->folio                = $r->folio;
+        $book->isbn                 = $r->isbn;
+        $book->title                = $r->title;
+        $book->autor                = $r->autor;
+        $book->description          = $r->description;
+        $book->editorial            = $r->editorial;
+        $book->area                 = $r->area;
+        $book->quantity             = $r->quantity;
+        $book->edition              = $r->edition;
+        $book->country              = $r->country;
+        $book->date_of_pub          = $r->date_of_pub;
+        $book->pages                = $r->pages;
+        $book->shelf                = $r->shelf;
+        $book->status               = 1;
+        $book->created_by           = jdecrypt($r->by_user_id);
+        $book->classification_id    = $r->classification;
+        $book->date_of_acq          = $r->date_of_acq;
+        $saved = $book->save();
+
+        if ($saved){
+            $msg        = "Se agregó el libro: " .$book->title;
+            $success    = true;
+        }
+
+        return response()->json(array('success' => $success, 'msg' => $msg, 'action' => $action));
     }
 }
