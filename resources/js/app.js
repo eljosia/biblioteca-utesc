@@ -1,5 +1,4 @@
 import $ from 'jquery';
-window.$ = $;
 
 import './bootstrap';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -12,7 +11,10 @@ import 'datatables.net-fixedcolumns';
 import AirDatepicker from 'air-datepicker';
 import 'air-datepicker/air-datepicker.css';
 import localeEs from 'air-datepicker/locale/es';
+import select2 from 'select2';
 
+select2($);
+window.$ = $;
 window.h = h;
 window.toastr = toastr;
 $.DataTable = dt;
@@ -31,4 +33,10 @@ window.Toast = Swal.mixin({
         toast.addEventListener('mouseenter', Swal.stopTimer)
         toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
+});
+
+$('select').select2({
+    theme: "bootstrap-5",
+    selectionCssClass: "select2--large",
+    dropdownCssClass: "select2--large",
 });

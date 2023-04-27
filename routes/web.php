@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BooksController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,8 @@ Route::middleware([
     Route::get('/libros', [BooksController::class, 'index'])->name('book.index');
     Route::get('/libro/nuevo', [BooksController::class, 'new'])->name('book.new');
     Route::get('/libro/editar/{id?}', [BooksController::class, 'edit'])->name('book.edit');
+
+    // Prestamos
+    Route::get('/prestamos', [LoanController::class, 'index'])->name('loan.index');
+    Route::get('/prestamos/nuevo', [LoanController::class, 'new'])->name('loan.new');
 });
-
-
