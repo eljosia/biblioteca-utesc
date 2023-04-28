@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code',6);
             $table->date('loan_date');
             $table->date('return_date')->nullable();
+            $table->boolean('status');
             $table->unsignedBigInteger('people_id');
             $table->unsignedBigInteger('book_id');
             $table->unsignedBigInteger('created_by');
