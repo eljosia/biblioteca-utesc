@@ -18,7 +18,7 @@ $(document).ready(function () {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                'bearer': $('meta[name="data-user"]').attr('content'),
+                'bearer': $('meta[name="data-key"]').attr('content'),
             },
             url: $(`#${table_id}`).data('url'),
             dataSrc: "books",

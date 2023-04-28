@@ -25,7 +25,7 @@ class BooksController extends Controller
 
     public function list(Request $r)
     {
-        $user_id    = $r->header('bearer');
+        $key        = ($r->header('bearer')) ? $r->header('bearer') : $r->key;
         $search     = $r->input('search');
         $title      = $r->input('titulo');
         $folio      = $r->input('folio');
@@ -43,10 +43,10 @@ class BooksController extends Controller
             'date_of_acq as acquisition', DB::raw("CONCAT('https://covers.openlibrary.org/b/isbn/', REPLACE(isbn, '-', ''), '-L.jpg') AS cover_img")
         ])->join('classifications as cl', 'cl.id', 'books.classification_id');
 
-        if (User::find(is_numeric(jdecrypt($user_id)))) :
+        if (env('ENCRYPT_PASS') == base64_decode($key)) :
             $edit_url   = DB::raw('CONCAT("' . route('book.edit') . '/", books.id) AS edit_url');
             $delete_url = DB::raw('CONCAT("' . route('book.delete') . '/", books.id) AS delete_url');
-            $data->books->addSelect($edit_url, $delete_url);
+            $data->books->addSelect('books.id as id',$edit_url, $delete_url);
         endif;
 
         $conditions = [
@@ -132,12 +132,12 @@ class BooksController extends Controller
             $book                       = new Book();
             $action                     = "new";
             $msg                        = "Se agregó el libro: " . $r->title;
-            $book->created_by           = jdecrypt($r->by_user_id);
+            $book->created_by           = $r->by_user_id;
         else:
             $book                       = Book::findOrFail($book_id);
             $action                     = "reload";
             $msg                        = "Se ha editado el libro: " . $book->title;
-            $book->updated_by           = jdecrypt($r->by_user_id);
+            $book->updated_by           = $r->by_user_id;
 
         endif;
 
@@ -160,10 +160,10 @@ class BooksController extends Controller
             $book->date_of_acq          = Carbon::createFromFormat('Y-m-d H:i:s', $r->date_of_acq . ' 00:00:00');
             $book->save();
 
-            saveLog('Book', 'save', $msg, $r->all(), $r->ip(), jdecrypt($r->by_user_id), $book->id);
+            saveLog('Book', 'save', $msg, $r->all(), $r->ip(), $r->by_user_id, $book->id);
             return response()->json(array('success' => true, 'msg' => $msg, 'action' => $action));
         } catch (Exception $e) {
-            saveLog('Book', 'save', $e->getMessage(), $r->all(), $r->ip(), jdecrypt($r->by_user_id));
+            saveLog('Book', 'save', $e->getMessage(), $r->all(), $r->ip(), $r->by_user_id);
             return response()->json(array('success' => false, 'msg' => 'Se ha producido un error al guardar el libro'));
         }
     }
@@ -177,5 +177,10 @@ class BooksController extends Controller
 
         saveLog('Book', 'delete', $msg, $r->all(), $r->ip(), jdecrypt($r->by_user_id), $book_id);
         return response()->json(array('success' => true, 'msg' => $msg, 'table_id' => 'books-table'));
+    }
+
+    public function title_list(Request $r){
+        $book = Book::select('title')->where('title', 'like', '%' . $r->title)->get();
+        return $book;
     }
 }

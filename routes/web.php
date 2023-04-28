@@ -35,4 +35,5 @@ Route::middleware([
     // Prestamos
     Route::get('/prestamos', [LoanController::class, 'index'])->name('loan.index');
     Route::get('/prestamos/nuevo', [LoanController::class, 'new'])->name('loan.new');
+    Route::get('/prestamo/{code?}', [LoanController::class, 'show'])->name('loan.show');
 });

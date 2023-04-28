@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="data-user" content="{{ jcrypt(Auth::id()) }}">
+    <meta name="data-key" content="{{base64_encode(env('ENCRYPT_PASS'))}}">
+    <meta name="data-user" content="{{ Auth::id() }}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -19,6 +20,9 @@
     @vite(['resources/sass/app.scss'])
     <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/fixedcolumns/3.3.3/css/fixedColumns.dataTables.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.01.min.css">
+
     @vite(['resources/css/loader.css'])
     @yield('css')
 </head>

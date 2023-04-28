@@ -30,7 +30,8 @@ export function getPetition(path, params, type = 'POST', async = true) {
     return new Promise((resolve, reject) => {
         let token = $('meta[name="csrf-token"]').attr('content');
         let user_id = $('meta[name="data-user"]').attr('content');
-        let _token = { '_token': token, 'api': true, 'by_user_id': user_id };
+        let key = $('meta[name="data-key"]').attr('content');
+        let _token = { '_token': token, 'api': true, 'by_user_id': user_id, 'key': key };
         $.extend(true, params, _token);
 
         $.ajax({
