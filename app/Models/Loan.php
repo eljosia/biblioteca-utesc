@@ -15,4 +15,14 @@ class Loan extends Model
         'people_id',
         'book_id'
     ];
+
+    function people()
+    {
+        return $this->belongsTo(People::class);
+    }
+
+    function book()
+    {
+        return $this->belongsTo(Book::class);
+    }
 }

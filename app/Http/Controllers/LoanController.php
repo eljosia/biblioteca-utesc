@@ -59,7 +59,7 @@ class LoanController extends Controller
 
         try {
             $people->name               = $r->name;
-            $people->last_name           = $r->last_name;
+            $people->last_name          = $r->last_name;
             $people->phone              = $r->phone;
             $people->tuition            = $r->tuition;
             $people->employee_number    = $r->employee_number;
@@ -101,5 +101,18 @@ class LoanController extends Controller
 
         // Insertar el nuevo código generado en la base de datos
         return $newCode;
+    }
+
+    public function show($code) {
+        $loan = Loan::where('code', $code)->first();
+        if (!$loan)
+            abort(404);
+
+        $data = (object)[];
+        $data->loan = $loan;
+        $data->people = $loan->people;
+        $data->book = $loan->book;
+
+        return view('pages.loans.show', compact('data'));
     }
 }
