@@ -85,26 +85,19 @@ class LoanController extends Controller
 
     public function genCode()
     {
-        // Recuperar el último código generado de la base de datos
-        $lastCode = Loan::orderBy('code', 'desc')->first();
+        $ultimo_codigo = Loan::orderBy('id', 'desc')->pluck('code')->first();
 
-        if ($lastCode) {
-            // Incrementar el valor numérico del último código en 1
-            $numbers = substr($lastCode->code, 1);
-            $newNumber = intval($numbers) + 1;
+        if (!$ultimo_codigo) {
+            $nuevo_codigo = 1;
         } else {
-            // Si no hay ningún código generado, crear uno nuevo
-            $newNumber = 1;
+            $nuevo_codigo = intval(substr($ultimo_codigo, 3)) + 1;
         }
 
-        // Combinar la base "PRE" con el nuevo valor numérico y completar los ceros faltantes
-        $newCode = "PRE" . str_pad($newNumber, 5, "0", STR_PAD_LEFT);
-
-        // Insertar el nuevo código generado en la base de datos
-        return $newCode;
+        return sprintf("PRE%05d", $nuevo_codigo);
     }
 
-    public function show($code) {
+    public function show($code)
+    {
         $loan = Loan::where('code', $code)->first();
         if (!$loan)
             abort(404);
@@ -117,7 +110,8 @@ class LoanController extends Controller
         return view('pages.loans.show', compact('data'));
     }
 
-    public function print($code) {
+    public function print($code)
+    {
         $loan = Loan::where('code', $code)->first();
         if (!$loan)
             abort(404);
@@ -126,10 +120,10 @@ class LoanController extends Controller
         $data->loan = $loan;
         $data->people = $loan->people;
         $data->book = $loan->book;
-        
+
         $data->copies = 1;
 
-        return FacadePdf::loadView('pages.loans.print',compact('data'))->stream();
+        return FacadePdf::loadView('pages.loans.print', compact('data'))->stream();
         // return view('pages.loans.print', compact('data'));
     }
 

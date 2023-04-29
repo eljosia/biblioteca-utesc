@@ -213,8 +213,8 @@
                     <div class="itm"><span>Referencia:</span> {{ $data->loan->code }}
                     </div>
                     <div class="itm"><span>Fecha de Prestamo:</span> @date($data->loan->created_at)</div>
-                    <div class="itm"><span>Fecha de Devolución:</span>
-                        {{ $data->loan->return_date ? \Carbon\Carbon::parse($data->loan->return_date)->formatLocalized('%d de %B de %Y') : ' - - - ' }}
+                    <div class="itm"><span>Fecha Límite de entraga:</span>
+                        @date($data->loan->return_date)
                     </div>
                 </div>
 
