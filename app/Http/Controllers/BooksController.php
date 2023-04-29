@@ -157,6 +157,7 @@ class BooksController extends Controller
             $book->shelf                = $r->shelf;
             $book->status               = 1;
             $book->classification_id    = $r->classification;
+            $book->donated              = ($r->donated) ? $r->donated : false;
             $book->date_of_acq          = Carbon::createFromFormat('Y-m-d H:i:s', $r->date_of_acq . ' 00:00:00');
             $book->save();
 

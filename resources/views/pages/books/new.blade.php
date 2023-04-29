@@ -107,7 +107,15 @@
                                     <input type="text" class="form-control inp" name="date_of_pub">
                                 </div>
         
-                                <div class="col-12">
+                                <div class="col-12 d-flex justify-content-end my-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="1" name="donated" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                          Libro donado
+                                        </label>
+                                      </div>
+                                </div>
+                                <div class="col-12 text-end">
                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
                             </form>
