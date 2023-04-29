@@ -25,6 +25,7 @@ export default defineConfig({
                 'resources/js/pages/books/new.js',
                 'resources/js/pages/books/edit.js',
 
+                'resources/js/pages/loans/index.js',
                 'resources/js/pages/loans/new.js',
                 'resources/js/pages/loans/show.js',
 

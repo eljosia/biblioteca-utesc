@@ -58,9 +58,24 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#collapseLoan" role="button"
+                        aria-expanded="false" aria-controls="collapseNav">
                         <i class="fa-solid fa-people-carry-box"></i> Prestamos
                     </a>
+                    <div class="collapse show" id="collapseLoan">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link ps-18 ps-lg-10" href="{{ route('loan.index') }}">
+                                    <i class="fa-solid fa-person-walking-luggage"></i> Todos los Prestamos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link ps-18 ps-lg-10" href="{{ route('loan.new') }}">
+                                    <i class="fa-regular fa-square-plus"></i> Nuevo Prestamo
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
             <!-- Push content down -->

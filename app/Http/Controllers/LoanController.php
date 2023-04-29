@@ -10,14 +10,35 @@ use Barryvdh\DomPDF\PDF;
 use Dompdf\Dompdf;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class LoanController extends Controller
 {
     public function index()
     {
+        $data = (object)[];
+        $data->loadloans = route('loan.list');
+        return view('pages.loans.index', compact('data'));
+    }
 
-        return view('pages.loans.index');
+    public function list()
+    {
+        $show_url   = route('loan.show') . '/';
+        $print_url  = route('loan.print') . '/';
+
+        $data = (object)[];
+        $raw_show       = DB::raw('CONCAT("' . $show_url . '", loans.code) AS show_url');
+        $raw_print      = DB::raw('CONCAT("' . $print_url . '", loans.code) AS print_url');
+        $raw_fullname   = DB::raw('CONCAT(peoples.name, " ", peoples.last_name) AS full_name');
+
+        $data->loans = Loan::select(['code', 'loan_date', 'return_date', 'peoples.identifier as identifier', 'books.title as title', 'users.name as created_by', $raw_fullname, $raw_print, $raw_show])
+        ->join('peoples', 'peoples.id', 'loans.people_id')
+        ->join('books', 'books.id', 'loans.book_id')
+        ->join('users', 'users.id', 'loans.created_by');
+
+        return response()->json(array('loans' => $data->loans->get(), 'count' => $data->loans->count(), 'sql' => toSqlQuery($data->loans)));
+
     }
 
     public function new()
@@ -46,7 +67,6 @@ class LoanController extends Controller
         }
 
         if (!$r->loan_id) {
-            $people             = new People();
             $loan               = new Loan();
             $loan->code         = $this->genCode();
             $loan->created_by   = $r->by_user_id;
@@ -54,11 +74,17 @@ class LoanController extends Controller
             $msg                = "Se ha guardado el prestamo";
             $event              = "Save";
         } else {
-            $people             = People::findOrFail($r->people_id);
             $loan               = Loan::findOrFail($r->loan_id);
             $loan->updated_by   = $r->by_user_id;
             $msg                = "Se ha editado el prestamo: " . $loan->code;
             $event              = "Update";
+        }
+
+        $people = People::where('identifier', $r->identifier);
+        if ($people->count() > 0) {
+            $people = $people->first();
+        } else {
+            $people = new People();
         }
 
         try {

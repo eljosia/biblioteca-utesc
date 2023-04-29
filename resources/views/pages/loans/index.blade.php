@@ -13,7 +13,27 @@
         <div class="col-12">
             <div class="card shadow p-5">
                 <div class="card-body">
-
+                    <div class="row">
+                    </div>
+                    <div id="dtable">
+                        <div class="dtable-content">
+                            <table class="table table-striped table-hover table-sm" id="loans-table"
+                                data-url="{{ $data->loadloans }}">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Matrícula</th>
+                                        <th>Nombre</th>
+                                        <th>Libro</th>
+                                        <th>Fecha de Prestamo</th>
+                                        <th>Fecha Limite</th>
+                                        <th>Prestado por</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,5 +41,6 @@
 @endsection
 
 @section('scripts')
+@vite(['resources/js/pages/loans/index.js'])
 
 @endsection
