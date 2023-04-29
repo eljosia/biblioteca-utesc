@@ -16,10 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('last_name')->nullable();
             $table->string('phone')->nullable();
-            $table->integer('tuition')->nullable();
-            $table->integer('employee_number')->nullable();
-            $table->integer('grade')->nullable();
-            $table->string('group', 1)->nullable();
+            $table->integer('identifier')->nullable();
             $table->string('career')->nullable();
             $table->timestamps();
         });

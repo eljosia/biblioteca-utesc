@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Loan;
 use App\Models\People;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF;
+use Dompdf\Dompdf;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -30,8 +33,8 @@ class LoanController extends Controller
             'name'              => 'required',
             'last_name'         => 'required',
             'phone'             => 'nullable|numeric',
-            'tuition'           => 'nullable|numeric',
-            'employee_number'   => 'nullable|integer',
+            'identifier'        => 'required|numeric',
+            'return_date'       => 'required'
         ]);
 
         if ($validate->fails()) {
@@ -47,6 +50,7 @@ class LoanController extends Controller
             $loan               = new Loan();
             $loan->code         = $this->genCode();
             $loan->created_by   = $r->by_user_id;
+            $loan->status       = true;
             $msg                = "Se ha guardado el prestamo";
             $event              = "Save";
         } else {
@@ -61,10 +65,7 @@ class LoanController extends Controller
             $people->name               = $r->name;
             $people->last_name          = $r->last_name;
             $people->phone              = $r->phone;
-            $people->tuition            = $r->tuition;
-            $people->employee_number    = $r->employee_number;
-            $people->grade              = $r->grade;
-            $people->group              = $r->group;
+            $people->identifier         = $r->identifier;
             $people->career             = $r->career;
             $people->save();
 
@@ -75,7 +76,7 @@ class LoanController extends Controller
             $loan->save();
 
             saveLog('Loan', $event, $msg, $r->all(), $r->ip(), $r->by_user_id, $loan->id);
-            return response()->json(array('success' => true, 'msg' => $msg, 'action' => ''));
+            return response()->json(array('success' => true, 'msg' => $msg, 'action' => route('loan.show', ['code' => $loan->code])));
         } catch (Exception $e) {
             saveLog('Loan', $event, $e->getMessage(), $r->all(), $r->ip(), $r->by_user_id);
             return response()->json(array('success' => false, 'msg' => 'Se ha producido un error al guardar el nuevo prestamo.'));
@@ -96,8 +97,8 @@ class LoanController extends Controller
             $newNumber = 1;
         }
 
-        // Combinar la base "A" con el nuevo valor numérico y completar los ceros faltantes
-        $newCode = "A" . str_pad($newNumber, 5, "0", STR_PAD_LEFT);
+        // Combinar la base "PRE" con el nuevo valor numérico y completar los ceros faltantes
+        $newCode = "PRE" . str_pad($newNumber, 5, "0", STR_PAD_LEFT);
 
         // Insertar el nuevo código generado en la base de datos
         return $newCode;
@@ -114,5 +115,28 @@ class LoanController extends Controller
         $data->book = $loan->book;
 
         return view('pages.loans.show', compact('data'));
+    }
+
+    public function print($code) {
+        $loan = Loan::where('code', $code)->first();
+        if (!$loan)
+            abort(404);
+
+        $data = (object)[];
+        $data->loan = $loan;
+        $data->people = $loan->people;
+        $data->book = $loan->book;
+        
+        $data->copies = 1;
+
+        return FacadePdf::loadView('pages.loans.print',compact('data'))->stream();
+        // return view('pages.loans.print', compact('data'));
+    }
+
+    public function searchPeople(Request $r)
+    {
+        $people = People::where('identifier', $r->identifier)->first();
+
+        return response()->json(array('data' => $people));
     }
 }

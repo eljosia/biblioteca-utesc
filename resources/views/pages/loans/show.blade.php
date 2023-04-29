@@ -20,7 +20,7 @@
                             <i class="fa-solid fa-calendar-day me-1"></i> Prestamo de libro #{{ $data->loan->code }}
                         </div>
                         <div class="col-md-6 text-end mt-4 mt-sm-0">
-                            <a href="#" class="btn btn-primary btn-sm"><i class="fa-solid fa-print d-sm-none"></i>
+                            <a target="_blank" href="{{route('loan.print', ['code' => $data->loan->code])}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-print d-sm-none"></i>
                                 <span class="d-none d-sm-block"><i class="fa-solid fa-print"></i> Imprimir</span>
                             </a>
                             <a href="#" class="btn btn-warning btn-sm"><i class="fa-solid fa-file-pen d-sm-none"></i>
@@ -32,6 +32,19 @@
                         </div>
                     </div>
 
+                    <div class="row mb-10">
+                        <div class="col-12 text-end">
+                            <div>
+                                <span class="font-bold">Fecha del Prestamo:</span> <br>
+                                @date($data->loan->created_at)
+                            </div>
+
+                            <div>
+                                <span class="font-bold">Fecha Limite de Entrega:</span> <br>
+                                @date($data->loan->return_date);
+                            </div>
+                        </div>
+                    </div>
                     <div class="row mb-4">
                         <div class="col-12 h4 text-center mb-4">
                             <i class="fa-solid fa-user me-1"></i> Datos de la persona
@@ -41,7 +54,7 @@
                     <div class="row mb-4">
                         <div class="col-sm-6 col-md-4 text-center">
                             <span class="font-bold">Matrícula / No. Empleado:</span> <br>
-                            {{ $data->people->tuition ? $data->people->tuition : $data->people->employee_number }}
+                            {{($data->people->identifier)}}
                         </div>
                         <div class="col-sm-6 col-md-4 text-center">
                             <span class="font-bold">Nombre:</span> <br>
@@ -57,10 +70,6 @@
                         <div class="col-sm-6 col-md-4 text-center">
                             <span class="font-bold">Carrera:</span> <br>
                             {{ $data->people->career }}
-                        </div>
-                        <div class="col-sm-6 col-md-4 text-center">
-                            <span class="font-bold">Grado y Grupo:</span> <br>
-                            {{ $data->people->grade }} "{{ $data->people->group }}"
                         </div>
                     </div>
 

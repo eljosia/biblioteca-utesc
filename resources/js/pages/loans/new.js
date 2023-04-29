@@ -39,7 +39,7 @@ autoCompleteJS.input.addEventListener("selection", function (event) {
     const selection = feedback.selection.value;
     autoCompleteJS.input.value = selection;
 
-    h.getPetition("/api/libros", {titulo:selection}, 'GET').then(response => {
+    h.getPetition("/api/libros", { titulo: selection }, 'GET').then(response => {
         var book = response.books[0];
         $('input[name="autor"]').val(book.autor)
         $('input[name="classification"]').val(book.shelf)
@@ -50,7 +50,7 @@ autoCompleteJS.input.addEventListener("selection", function (event) {
 
 $(document).ready(function () {
 
-    $('#form-new-loan').on('submit', function(e){
+    $('#form-new-loan').on('submit', function (e) {
         e.preventDefault();
         var idform = this;
         var errors = document.querySelectorAll('.error');
@@ -59,11 +59,12 @@ $(document).ready(function () {
         h.sendform(idform).then(data => {
             if (data.success == true) {
                 h.toast(data.msg);
+                location.href = data.action;
                 // if (data.action == 'new') { $(idform)[0].reset(); $('#previewimg').html('')}
                 // else {
                 //     location.reload
                 // }
-    
+
                 console.log(data);
             } else {
                 h.toast("Ops...", 'error');
@@ -75,5 +76,22 @@ $(document).ready(function () {
             }
         })
     })
+
+    $('input[name="identifier"]').blur(function () {
+        var $identifier = $(this).val();
+        var people
+        h.getPetition('/api/prestamo/buscar-persona', { identifier: $identifier }, 'GET').then(response => {
+            people = response.data
+
+            $('input[name="name"]').val(people.name);
+            $('input[name="last_name"]').val(people.last_name);
+            $('input[name="phone"]').val(people.phone);
+            $('select[name="career"]').val(people.career).trigger('change');
+            $('select[name="grade"]').val(people.grade).trigger('change');
+            $('input[name="group"]').val(people.group);
+
+
+        });
+    });
 
 });

@@ -27,15 +27,25 @@
                                     <input type="date" name="loan_date" class="form-control"
                                         value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                 </div>
-                                <div class="col-6 col-md-4 ps-2">
-                                    <label for="" class="form-label">Fecha de Devolución</label>
-                                    <input type="date" name="return_date" class="form-control">
+                                <div class="col-6 col-md-4 pe-2">
+                                    <label for="" class="form-label">Fecha de Entrega</label>
+                                    <input type="date" name="return_date" class="form-control"
+                                        value="{{ \Carbon\Carbon::now()->addDay(5)->format('Y-m-d') }}">
                                 </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="col-12 h4 mb-4">
                                     Datos del Alumno/Profesor
                                     <hr>
+                                </div>
+                                <div class="col-12 row mb-4">
+                                    <div class="col-md-4">
+                                        <label for="" class="form-label">Matricula / No. Empleado / ID INE:</label>
+                                        <input type="text" class="form-control" name="identifier"
+                                            placeholder="Ingrese el identificador">
+                                        <span class="error text-danger font-bold" data-name="employee_number"></span>
+                                    </div>
+
                                 </div>
                                 <div class="col-md-6 pe-2">
                                     <label for="" class="form-label">Nombre: <span
@@ -63,28 +73,6 @@
                                     <span class="error text-danger font-bold" data-name="phone"></span>
 
                                 </div>
-                                <div class="col-md-4 px-1">
-                                    <label for="" class="form-label">Matrícula:</label>
-                                    <input type="text" class="form-control" name="tuition"
-                                        placeholder="Matrícula del alumno">
-                                    <span class="error text-danger font-bold" data-name="tuition"></span>
-
-                                </div>
-                                <div class="col-md-4 ps-2">
-                                    <label for="" class="form-label">No. de Empleado:</label>
-                                    <input type="text" class="form-control" name="employee_number"
-                                        placeholder="Número de Empleado">
-                                    <span class="error text-danger font-bold" data-name="employee_number"></span>
-
-                                </div>
-                                <div class="col-md-8 ms-auto text-center">
-                                    <div style="font-size: 0.7rem">Ingrese solo <b>La Matrícula</b> si correspone a un
-                                        alumno o <b>Número de Empleado</b> a algun trabajador de la escuela si es necesario
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-8">
                                 <div class="col-sm-7 col-md-4 pe-2">
                                     <label for="" class="form-label">Carrera:</label>
                                     <select name="career" class="form-control">
@@ -92,19 +80,6 @@
                                             <option value="{{ $career->area }}">{{ $career->area }}</option>
                                         @endforeach
                                     </select>
-                                </div>
-                                <div class="col-sm-3 px-1">
-                                    <label for="" class="form-label">Cuatrimestre:</label>
-                                    <select name="grade" class="form-control">
-                                        <option value="0">S/N</option>
-                                        @for ($i = 1; $i < 12; $i++)
-                                            <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                                <div class="col-sm-2 ps-2">
-                                    <label for="" class="form-label">Grupo:</label>
-                                    <input type="text" class="form-control" name="group" placeholder="Grupo">
                                 </div>
                             </div>
                         </div>
