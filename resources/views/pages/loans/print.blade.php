@@ -281,7 +281,7 @@
                     autorizado y puede ser consultado fuera de la biblioteca de la Universidad.</p>
 
                 <ol>
-                    <li>El usuario interno podrá obtener un máximo de tres libros durante cinco días naturales; el
+                    <li>El usuario interno podrá obtener un máximo de tres libros durante {{calculateDays($data->loan->created_at, $data->loan->return_date)}} días naturales; el
                         préstamo
                         podrá prorrogarse una sola vez por el mismo periodo.</li>
                     <li>El registro de préstamo para académicos, investigadores, funcionarios y personal administrativo

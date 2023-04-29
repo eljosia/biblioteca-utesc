@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\ActivityLogController;
 use App\Models\ActivityLog;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Luecano\NumeroALetras\NumeroALetras;
 
 function image($nombre)
 {
@@ -44,4 +46,19 @@ function saveLog($model, $event, $message, $request, $ip = '1.1.1.1', $user = 1,
 {
     ActivityLogController::save($model, $model_id, $event, $message, json_encode($request), $ip, $user);
     return $message;
+}
+
+function numToWord($n)
+{
+    $formatter = new NumeroALetras();
+    return $formatter->toWords($n);
+}
+
+function calculateDays($date1, $date2)
+{
+    $date1 = Carbon::parse($date1);
+    $date2 = Carbon::parse($date2);
+    $diffDays = $date1->diffInDays($date2);
+    return numToWord($diffDays);
+    // return $diffDays;
 }
