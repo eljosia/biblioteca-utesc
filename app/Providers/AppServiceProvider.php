@@ -34,5 +34,15 @@ class AppServiceProvider extends ServiceProvider
                 return "";
             endif;
         });
+
+        Blade::directive('datetime', function ($date) {
+            if (is_null($date))
+                return "";
+            if ($date != "") :
+                return "<?php echo \Carbon\Carbon::parse($date)->formatLocalized('%d de %B de %Y a las %H:%M'); ?>";
+            else :
+                return "";
+            endif;
+        });
     }
 }

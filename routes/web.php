@@ -38,4 +38,5 @@ Route::middleware([
     Route::get('/prestamos/editar/{code?}', [LoanController::class, 'edit'])->name('loan.edit');
     Route::get('/prestamo/{code?}', [LoanController::class, 'show'])->name('loan.show');
     Route::get('/prestamo/print/{code?}', [LoanController::class, 'print'])->name('loan.print');
+    Route::get('/prestamo/print/voucher/{code?}', [LoanController::class, 'delivery_voucher'])->name('loan.print_delivery_voucher');
 });

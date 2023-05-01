@@ -27,6 +27,7 @@ Route::delete('/libro/borrar/{id?}', [BooksController::class, 'delete'])->name('
 
 Route::get('/prestamos', [LoanController::class, 'list'])->name('loan.list');
 Route::post('/prestamos/guardar', [LoanController::class, 'save'])->name('loan.save');
+Route::post('/prestamo/entregar', [LoanController::class, 'deliver'])->name('loan.deliver');
 
 
 Route::get('/prestamo/buscar-persona', [LoanController::class, 'searchPeople'])->name('loan.search-people');

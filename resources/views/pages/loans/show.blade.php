@@ -20,15 +20,21 @@
                             <i class="fa-solid fa-calendar-day me-1"></i> Prestamo de libro #{{ $data->loan->code }}
                         </div>
                         <div class="col-md-6 text-end mt-4 mt-sm-0">
-                            <a target="_blank" href="{{route('loan.print', ['code' => $data->loan->code])}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-print d-sm-none"></i>
+                            <a target="_blank" href="{{ route('loan.print', ['code' => $data->loan->code]) }}"
+                                class="btn btn-primary btn-sm"><i class="fa-solid fa-print d-sm-none"></i>
                                 <span class="d-none d-sm-block"><i class="fa-solid fa-print"></i> Imprimir</span>
                             </a>
-                            <a href="{{route('loan.edit', ['code' => $data->loan->code])}}" class="btn btn-warning btn-sm"><i class="fa-solid fa-file-pen d-sm-none"></i>
-                                <span class="d-none d-sm-block"><i class="fa-solid fa-file-pen"></i> Editar</span>
-                            </a>
-                            <a href="#" class="btn btn-success btn-sm"><i class="fa-solid fa-check d-sm-none"></i>
-                                <span class="d-none d-sm-block"><i class="fa-solid fa-check"></i> Entregar</span>
-                            </a>
+                            @if (!$data->loan->delivery_date)
+                                <a href="{{ route('loan.edit', ['code' => $data->loan->code]) }}"
+                                    class="btn btn-warning btn-sm"><i class="fa-solid fa-file-pen d-sm-none"></i>
+                                    <span class="d-none d-sm-block"><i class="fa-solid fa-file-pen"></i> Editar</span>
+                                </a>
+                                <button data-url="{{ route('loan.deliver') }}" data-action="deliver"
+                                    data-code="{{ $data->loan->code }}" class="btn btn-success btn-sm"><i
+                                        class="fa-solid fa-check d-sm-none"></i>
+                                    <span class="d-none d-sm-block"><i class="fa-solid fa-check"></i> Entregar</span>
+                                </button>
+                            @endif
                         </div>
                     </div>
 
@@ -40,8 +46,13 @@
                             </div>
 
                             <div>
+                                @if(!$data->loan->delivery_date)
                                 <span class="font-bold">Fecha Limite de Entrega:</span> <br>
                                 @date($data->loan->return_date);
+                                @else
+                                <span class="font-bold">Fecha Entregada:</span> <br>
+                                @datetime($data->loan->delivery_date)
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -54,7 +65,7 @@
                     <div class="row mb-4">
                         <div class="col-sm-6 col-md-4 text-center">
                             <span class="font-bold">Matrícula / No. Empleado:</span> <br>
-                            {{($data->people->identifier)}}
+                            {{ $data->people->identifier }}
                         </div>
                         <div class="col-sm-6 col-md-4 text-center">
                             <span class="font-bold">Nombre:</span> <br>

@@ -43,7 +43,7 @@ $(document).ready(function () {
                     return `
             <a href="${row.print_url}" target="_blank" class="btn btn-primary btn-xs rounded-circle"><i class="fa-solid fa-print"></i></a>
             <a href="${row.edit_url}" class="btn btn-secondary btn-xs rounded-circle"><i class="fa-solid fa-pen-to-square"></i></a>
-            <button data-url="${row.delete_url}" data-action="delete" class="btn btn-success btn-xs rounded-circle"><i class="fa-solid fa-check"></i></button>
+            <a href="${row.show_url}" class="btn btn-dark btn-xs rounded-circle"><i class="fa-solid fa-eye"></i></a>
             `
                 }
             },

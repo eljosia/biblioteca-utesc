@@ -42,7 +42,7 @@ class BooksController extends Controller
         $data->books = Book::select([
             'title', 'folio', 'isbn', 'autor', 'editorial', 'careers.name as area', 'quantity', 'edition', 'country', 'pages', 'shelf', 'theme',
             'date_of_acq as acquisition', DB::raw("CONCAT('https://covers.openlibrary.org/b/isbn/', REPLACE(isbn, '-', ''), '-L.jpg') AS cover_img"),
-            DB::raw("CASE WHEN loans.id IS NULL OR loans.status IS TRUE THEN 'Disponible' ELSE 'Ocupado' END AS status")
+            DB::raw("CASE WHEN loans.id IS NULL OR loans.delivery_date IS NOT NULL THEN 'Disponible' ELSE 'Ocupado' END AS status")
         ])
         ->join('classifications as cl', 'cl.id', 'books.classification_id')
         ->join('careers', 'careers.id', 'books.area')
@@ -171,7 +171,7 @@ class BooksController extends Controller
         $book->delete();
         $msg = "Se ha borrado el libro correctamente.";
 
-        saveLog('Book', 'delete', $msg, $r->all(), $r->ip(), jdecrypt($r->by_user_id), $book_id);
+        saveLog('Book', 'delete', $msg, $r->all(), $r->ip(), $r->by_user_id, $book_id);
         return response()->json(array('success' => true, 'msg' => $msg, 'table_id' => 'books-table'));
     }
 

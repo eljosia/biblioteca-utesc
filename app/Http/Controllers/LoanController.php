@@ -8,6 +8,7 @@ use App\Models\Loan;
 use App\Models\People;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF;
+use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Exception;
 use Illuminate\Http\Request;
@@ -84,7 +85,6 @@ class LoanController extends Controller
             $loan               = new Loan();
             $loan->code         = $this->genCode();
             $loan->created_by   = $r->by_user_id;
-            $loan->status       = true;
             $msg                = "Se ha guardado el prestamo";
             $event              = "Save";
         } else {
@@ -172,5 +172,43 @@ class LoanController extends Controller
         $people = People::where('identifier', $r->identifier)->first();
 
         return response()->json(array('data' => $people));
+    }
+
+    public function deliver(Request $r)
+    {
+        $loan = Loan::where('code', $r->code)->first();
+        $book = Book::where('folio', $r->folio)->first();
+        if ($loan->book_id !== $book->id) :
+            saveLog('Loan', 'Update', "No se encontró el codigo o folio", $r->all(), $r->ip(), $r->by_user_id);
+            abort(404);
+        endif;
+        try {
+            $loan->delivery_date = Carbon::now()->format('Y-m-d H:i:s');
+            $loan->save();
+            $msg = "Se ha confirmado la entrega del libro con folio:" . $loan->book->folio;
+
+            saveLog('Loan', 'Update', $msg, $r->all(), $r->ip(), $r->by_user_id, $loan->id);
+            return response()->json(array('success' => true, 'msg' => $msg, 'action' => route('loan.show', ['code' => $loan->code])));
+        } catch (Exception $e) {
+            saveLog('Loan', 'Update', $e->getMessage(), $r->all(), $r->ip(), $r->by_user_id, $loan->id);
+            return response()->json(array('success' => false, 'msg' => "Hubo un error al confirmar la entrega"));
+        }
+    }
+
+    public function delivery_voucher($code)
+    {
+        $loan = Loan::where('code', $code)->whereNotNull('delivery_date')->first();
+        if (!$loan)
+            abort(404);
+
+        $data = (object)[];
+        $data->loan = $loan;
+        $data->people = $loan->people;
+        $data->book = $loan->book;
+
+        $data->copies = 1;
+
+        // return FacadePdf::loadView('pages.loans.print_delivery_voucher', compact('data'))->stream();
+        return view('pages.loans.print_delivery_voucher', compact('data'));
     }
 }

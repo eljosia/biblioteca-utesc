@@ -5,6 +5,13 @@ $(document).ready(function () {
 
     searchCover(url, cover);
     console.log("ready")
+
+    $('[data-action="deliver"]').on('click', function (e) {
+        e.preventDefault();
+        var url = $(this).data('url');
+        var code = $(this).data('code');
+        book_deliver(url, code);
+    })
 });
 
 async function searchCover(url, cover) {
@@ -49,4 +56,36 @@ async function searchCover(url, cover) {
     } catch (error) {
         console.log(error);
     }
+}
+
+function book_deliver(url, code) {
+    Swal.fire({
+        title: 'Aviso',
+        text: "Por favor, verifica que el libro sea el mismo y se encuentre en condiciones antes de confirmar la entrega.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f36',
+        cancelButtonColor: '#cfd6df',
+        confirmButtonText: 'Confirmar',
+        input: 'text',
+        inputPlaceholder: 'Ingrese el número de adquisición'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (result.value.length > 0)
+                h.getPetition(url, { code: code, folio: result.value }, 'post', false).then(data => {
+                    if (data.success == true) {
+                        h.toast(data.msg);
+                        if (data.action) {
+                            location.href = data.action;
+                        }
+                    } else {
+                        h.toast("Ops...", 'Ha ocurrido un error');
+                        console.log(data)
+                    }
+                });
+            else {
+                toast("Ingrese el número de adquisición", 'warning');
+            }
+        }
+    });
 }
