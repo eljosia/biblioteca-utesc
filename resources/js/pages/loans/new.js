@@ -4,7 +4,7 @@ const autoCompleteJS = new autoComplete(// API Basic Configuration Object
         selector: "#book-title",
         data: {
             src: async () => {
-                const response = await fetch('/api/libros?titulo=' + document.querySelector('#book-title').value);
+                const response = await fetch('/api/libros');
                 const data = await response.json();
                 console.log(data.books.map(item => item.title))
                 return data.books.map(item => item.title);

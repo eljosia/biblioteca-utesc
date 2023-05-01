@@ -19,4 +19,9 @@ class People extends Model
         'group',
         'career',
     ];
+
+    public function career()
+    {
+        return $this->belongsTo(Careers::class);
+    }
 }
