@@ -75,9 +75,9 @@
                                 </div>
                                 <div class="col-sm-7 col-md-4 pe-2">
                                     <label for="" class="form-label">Carrera:</label>
-                                    <select name="career" class="form-control">
+                                    <select name="career_id" class="form-control">
                                         @foreach ($data->career as $career)
-                                            <option value="{{ $career->area }}">{{ $career->area }}</option>
+                                            <option value="{{ $career->id }}">{{ $career->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

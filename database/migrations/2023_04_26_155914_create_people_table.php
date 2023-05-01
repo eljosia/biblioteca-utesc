@@ -17,8 +17,11 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->string('phone')->nullable();
             $table->integer('identifier')->nullable();
-            $table->string('career')->nullable();
+            $table->unsignedBigInteger('career_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('career_id')->references('id')->on('careers');
+
         });
     }
 

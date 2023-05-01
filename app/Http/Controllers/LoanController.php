@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Careers;
 use App\Models\Loan;
 use App\Models\People;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -44,7 +45,7 @@ class LoanController extends Controller
     public function new()
     {
         $data = (object)[];
-        $data->career = Book::select('area')->groupBy('area')->get();
+        $data->career = Careers::all();
         return view('pages.loans.new', compact('data'));
     }
 
@@ -92,7 +93,7 @@ class LoanController extends Controller
             $people->last_name          = $r->last_name;
             $people->phone              = $r->phone;
             $people->identifier         = $r->identifier;
-            $people->career             = $r->career;
+            $people->career_id          = $r->career_id;
             $people->save();
 
             $loan->loan_date            = $r->loan_date;
