@@ -30,4 +30,9 @@ class Book extends Model
         'classification_id',
         'date_of_acq',
     ];
+
+    public function classification()
+    {
+        return $this->belongsTo(Classification::class);
+    }
 }

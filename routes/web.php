@@ -35,6 +35,7 @@ Route::middleware([
     // Prestamos
     Route::get('/prestamos', [LoanController::class, 'index'])->name('loan.index');
     Route::get('/prestamos/nuevo', [LoanController::class, 'new'])->name('loan.new');
+    Route::get('/prestamos/editar/{code?}', [LoanController::class, 'edit'])->name('loan.edit');
     Route::get('/prestamo/{code?}', [LoanController::class, 'show'])->name('loan.show');
     Route::get('/prestamo/print/{code?}', [LoanController::class, 'print'])->name('loan.print');
 });
