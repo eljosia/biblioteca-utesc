@@ -60,5 +60,4 @@ function calculateDays($date1, $date2)
     $date2 = Carbon::parse($date2);
     $diffDays = $date1->diffInDays($date2);
     return numToWord($diffDays);
-    // return $diffDays;
 }

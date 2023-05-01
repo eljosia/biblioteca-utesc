@@ -40,8 +40,11 @@ class BooksController extends Controller
         $data = (object)[];
         $data->books = Book::select([
             'title', 'folio', 'isbn', 'autor', 'editorial', 'area', 'quantity', 'edition', 'country', 'pages', 'shelf', 'theme',
-            'date_of_acq as acquisition', DB::raw("CONCAT('https://covers.openlibrary.org/b/isbn/', REPLACE(isbn, '-', ''), '-L.jpg') AS cover_img")
-        ])->join('classifications as cl', 'cl.id', 'books.classification_id');
+            'date_of_acq as acquisition', DB::raw("CONCAT('https://covers.openlibrary.org/b/isbn/', REPLACE(isbn, '-', ''), '-L.jpg') AS cover_img"),
+            DB::raw("CASE WHEN loans.id IS NULL OR loans.status IS TRUE THEN 'Disponible' ELSE 'Ocupado' END AS status")
+        ])
+        ->join('classifications as cl', 'cl.id', 'books.classification_id')
+        ->leftJoin('loans', 'loans.book_id', '=', 'books.id');
 
         if (env('ENCRYPT_PASS') == base64_decode($key)) :
             $edit_url   = DB::raw('CONCAT("' . route('book.edit') . '/", books.id) AS edit_url');
@@ -155,7 +158,7 @@ class BooksController extends Controller
             $book->date_of_pub          = Carbon::createFromDate($r->date_of_pub);
             $book->pages                = $r->pages;
             $book->shelf                = $r->shelf;
-            $book->status               = 1;
+            $book->status               = 0;
             $book->classification_id    = $r->classification;
             $book->donated              = ($r->donated) ? $r->donated : false;
             $book->date_of_acq          = Carbon::createFromFormat('Y-m-d H:i:s', $r->date_of_acq . ' 00:00:00');
