@@ -208,7 +208,7 @@ class LoanController extends Controller
 
         $data->copies = 1;
 
-        // return FacadePdf::loadView('pages.loans.print_delivery_voucher', compact('data'))->stream();
-        return view('pages.loans.print_delivery_voucher', compact('data'));
+        return FacadePdf::loadView('pages.loans.print_delivery_voucher', compact('data'))->stream();
+        // return view('pages.loans.print_delivery_voucher', compact('data'));
     }
 }

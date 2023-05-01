@@ -20,7 +20,8 @@
                             <i class="fa-solid fa-calendar-day me-1"></i> Prestamo de libro #{{ $data->loan->code }}
                         </div>
                         <div class="col-md-6 text-end mt-4 mt-sm-0">
-                            <a target="_blank" href="{{ route('loan.print', ['code' => $data->loan->code]) }}"
+                            <a target="_blank"
+                                href="{{ (!$data->loan->delivery_date) ? route('loan.print', ['code' => $data->loan->code]) : route('loan.print_delivery_voucher', ['code' => $data->loan->code]) }}"
                                 class="btn btn-primary btn-sm"><i class="fa-solid fa-print d-sm-none"></i>
                                 <span class="d-none d-sm-block"><i class="fa-solid fa-print"></i> Imprimir</span>
                             </a>
@@ -46,12 +47,12 @@
                             </div>
 
                             <div>
-                                @if(!$data->loan->delivery_date)
-                                <span class="font-bold">Fecha Limite de Entrega:</span> <br>
-                                @date($data->loan->return_date);
+                                @if (!$data->loan->delivery_date)
+                                    <span class="font-bold">Fecha Limite de Entrega:</span> <br>
+                                    @date($data->loan->return_date);
                                 @else
-                                <span class="font-bold">Fecha Entregada:</span> <br>
-                                @datetime($data->loan->delivery_date)
+                                    <span class="font-bold">Fecha Entregada:</span> <br>
+                                    @datetime($data->loan->delivery_date)
                                 @endif
                             </div>
                         </div>
