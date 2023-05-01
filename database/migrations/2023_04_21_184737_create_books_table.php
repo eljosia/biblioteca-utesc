@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('autor', 155)->nullable();
             $table->string('description',5000)->nullable();
             $table->string('editorial',45)->nullable();
-            $table->string('area', 45)->nullable();
+            $table->unsignedBigInteger('area')->nullable();
             $table->integer('quantity')->nullable();
             $table->string('edition', 50)->nullable();
             $table->string('country', 45)->nullable();
@@ -34,6 +34,7 @@ return new class extends Migration
 
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
+            $table->foreign('area')->references('id')->on('careers');
 
             $table->timestamps();
             $table->softDeletes();
