@@ -66,8 +66,9 @@
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Area:</label>
                                     <select class="form-control inp" name="area">
-                                        @foreach ($areas as $value => $label)
-                                            <option value="{{ $value }}" {{ $book->area == $value ? 'selected' : '' }}>{{ $label }}</option>
+                                        @foreach($areas as $area)
+                                        <option value="{{$area->id}}" {{($book->area === $area->id) ? 'selected' : ''}}>{{$area->name}}</option>
+
                                         @endforeach
                                     </select>
                                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Careers;
 use App\Models\Classification;
 use App\Models\User;
 use Carbon\Carbon;
@@ -39,11 +40,12 @@ class BooksController extends Controller
 
         $data = (object)[];
         $data->books = Book::select([
-            'title', 'folio', 'isbn', 'autor', 'editorial', 'area', 'quantity', 'edition', 'country', 'pages', 'shelf', 'theme',
+            'title', 'folio', 'isbn', 'autor', 'editorial', 'careers.name as area', 'quantity', 'edition', 'country', 'pages', 'shelf', 'theme',
             'date_of_acq as acquisition', DB::raw("CONCAT('https://covers.openlibrary.org/b/isbn/', REPLACE(isbn, '-', ''), '-L.jpg') AS cover_img"),
             DB::raw("CASE WHEN loans.id IS NULL OR loans.status IS TRUE THEN 'Disponible' ELSE 'Ocupado' END AS status")
         ])
         ->join('classifications as cl', 'cl.id', 'books.classification_id')
+        ->join('careers', 'careers.id', 'books.area')
         ->leftJoin('loans', 'loans.book_id', '=', 'books.id');
 
         if (env('ENCRYPT_PASS') == base64_decode($key)) :
@@ -90,7 +92,8 @@ class BooksController extends Controller
     public function new()
     {
         $data = (object)[];
-        $data->classifications = Classification::all();
+        $data->classifications  = Classification::all();
+        $data->area             = Careers::all();
 
         return view('pages.books.new', compact('data'));
     }
@@ -98,18 +101,7 @@ class BooksController extends Controller
     public function edit($id)
     {
         $book = Book::findOrFail($id);
-        $areas = [
-            'Agricultura' => 'Agricultura',
-            'Enfermería' => 'Enfermería',
-            'Gastronomía' => 'Gastronomía',
-            'Infantiles' => 'Infantiles',
-            'Mantenimiento' => 'Mantenimiento',
-            'Mecatrónica' => 'Mecatrónica',
-            'Otros' => 'Otros',
-            'Procesos Bioalimentarios' => 'Procesos Bioalimentarios',
-            'Tecnologías' => 'Tecnologías',
-            'Turismo' => 'Turismo',
-        ];
+        $areas = Careers::all();
 
         return view('pages.books.edit', compact('book', 'areas'));
 

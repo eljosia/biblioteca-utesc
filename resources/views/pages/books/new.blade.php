@@ -62,16 +62,9 @@
                                 <div class="col-6 col-md-4 p-1">
                                     <label for="" class="form-label">Area:</label>
                                     <select class="form-control inp" name="area">
-                                        <option value="Agricultura">Agricultura</option>
-                                        <option value="Enfermería">Enfermería</option>
-                                        <option value="Gastronomía">Gastronomía</option>
-                                        <option value="Infantiles">Infantiles</option>
-                                        <option value="Mantenimiento">Mantenimiento</option>
-                                        <option value="Mecatrónica">Mecatrónica</option>
-                                        <option value="Otros">Otros</option>
-                                        <option value="Procesos Bioalimentarios">Procesos Bioalimentarios</option>
-                                        <option value="Tecnologías">Tecnologías</option>
-                                        <option value="Turismo">Turismo</option>
+                                        @foreach($data->area as $area)
+                                        <option value="{{$area->id}}">{{$area->name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-6 col-md-4 p-1">
