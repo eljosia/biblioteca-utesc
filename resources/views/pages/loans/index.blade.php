@@ -25,7 +25,7 @@
                                         <th>Matrícula</th>
                                         <th>Nombre</th>
                                         <th>Libro</th>
-                                        <th>Fecha de Prestamo</th>
+                                        <th>Prestamo</th>
                                         <th>Fecha Limite</th>
                                         <th>Prestado por</th>
                                         <th>Acciones</th>

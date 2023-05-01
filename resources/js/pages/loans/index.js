@@ -60,11 +60,6 @@ $(document).ready(function () {
     });
 
     loan_table.on('processing.dt', function (e, settings, processing) {
-
         console.log("Procesing")
-    });
-
-    loan_table.on('draw.dt', function () {
-        $(`#${table_id} tbody`).find('tr').eq(0).remove();
     });
 });

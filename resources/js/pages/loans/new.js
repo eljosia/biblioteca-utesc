@@ -81,14 +81,18 @@ $(document).ready(function () {
         var $identifier = $(this).val();
         var people
         h.getPetition('/api/prestamo/buscar-persona', { identifier: $identifier }, 'GET').then(response => {
-            people = response.data
 
-            $('input[name="name"]').val(people.name);
-            $('input[name="last_name"]').val(people.last_name);
-            $('input[name="phone"]').val(people.phone);
-            $('select[name="career"]').val(people.career).trigger('change');
-            $('select[name="grade"]').val(people.grade).trigger('change');
-            $('input[name="group"]').val(people.group);
+            if(response.data){
+                people = response.data
+                $('input[name="name"]').val(people.name);
+                $('input[name="last_name"]').val(people.last_name);
+                $('input[name="phone"]').val(people.phone);
+                $('select[name="career"]').val(people.career).trigger('change');
+                $('select[name="grade"]').val(people.grade).trigger('change');
+                $('input[name="group"]').val(people.group);
+            } else {
+                h.toast('No se encontró ninguna persona, ingresa los datos correspondientes', 'info')
+            }
 
 
         });
