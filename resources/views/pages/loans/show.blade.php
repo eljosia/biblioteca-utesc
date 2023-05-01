@@ -18,6 +18,7 @@
                     <div class="border-bottom pb-3 mb-6 row">
                         <div class="col-md-6 h3 my-auto">
                             <i class="fa-solid fa-calendar-day me-1"></i> Prestamo de libro #{{ $data->loan->code }}
+                            <span class="badge {{$data->loan->status()->class}}">{{$data->loan->status()->msg}}</span>
                         </div>
                         <div class="col-md-6 text-end mt-4 mt-sm-0">
                             <a target="_blank"
