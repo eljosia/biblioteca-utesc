@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BooksController;
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\LoanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,14 +21,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// LIBROS
 Route::get('/libros', [BooksController::class, 'list'])->name('book.list');
 Route::get('/libros/titulos', [BooksController::class, 'title_list'])->name('book.title_list');
 Route::post('/libro/guardar', [BooksController::class, 'save'])->name('book.save');
 Route::delete('/libro/borrar/{id?}', [BooksController::class, 'delete'])->name('book.delete');
 
+// PRESTAMOS
 Route::get('/prestamos', [LoanController::class, 'list'])->name('loan.list');
 Route::post('/prestamos/guardar', [LoanController::class, 'save'])->name('loan.save');
 Route::post('/prestamo/entregar', [LoanController::class, 'deliver'])->name('loan.deliver');
-
-
 Route::get('/prestamo/buscar-persona', [LoanController::class, 'searchPeople'])->name('loan.search-people');
+
+// DASHBOARD CHARTS
+Route::get('/chart/get-quantity-books', [ChartController::class, 'getQuantityBooks'])->name('chart.getQuantityBooks');

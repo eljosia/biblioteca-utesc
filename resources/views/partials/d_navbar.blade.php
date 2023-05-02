@@ -28,7 +28,7 @@
             <!-- Navigation -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="*">
+                    <a class="nav-link" href="{{route('dashboard.index')}}">
                         <i class="fa-solid fa-gauge"></i> Dashboard
                     </a>
                 </li>

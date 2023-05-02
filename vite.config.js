@@ -21,6 +21,8 @@ export default defineConfig({
                 'resources/js/datatables/dataTables.min.js',
 
                 // PAGES
+                'resources/js/home.js',
+
                 'resources/js/pages/books/index.js',
                 'resources/js/pages/books/new.js',
                 'resources/js/pages/books/edit.js',
