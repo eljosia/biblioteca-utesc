@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class BooksController extends Controller
 {
@@ -180,5 +182,53 @@ class BooksController extends Controller
     {
         $book = Book::select('title')->where('title', 'like', '%' . $r->title)->get();
         return $book;
+    }
+
+    public function save_cover()
+    {
+        $book = Book::select(['books.id as id', 'isbn'])->where('books.id', '>', 4370)->get();
+        foreach ($book as $b) {
+            $url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' . $b->isbn;
+            $cover = 'https://covers.openlibrary.org/b/isbn/' . $b->isbn . '-L.jpg';
+
+            DB::table('cover_books')->insert([
+                "cover_url" => $this->searchCover($url, $cover),
+                "book_id" => $b->id
+            ]);
+        }
+        // return $book;
+    }
+
+    public function searchCover($url, $cover)
+    {
+        try {
+            $client = new Client();
+            $response = $client->request('GET', $url);
+            $results = json_decode($response->getBody());
+
+            if ($results->totalItems == 1) {
+                $book = $results->items[0];
+                $thumbnail = null;
+
+                if (isset($book->volumeInfo->imageLinks)) {
+                    $thumbnail = $book->volumeInfo->imageLinks->thumbnail;
+                } else {
+                    $size = getimagesize($cover);
+
+                    if ($size[0] === 1 && $size[1] === 1) {
+                        $thumbnail = null;
+                    } else {
+                        $thumbnail = $cover;
+                    }
+                }
+
+                // MOSTRAMOS
+                return $thumbnail;
+            } else {
+                echo 'No se pudo cargar la imagen';
+            }
+        } catch (GuzzleException $error) {
+            echo $error->getMessage();
+        }
     }
 }
