@@ -37,7 +37,7 @@
                         aria-expanded="false" aria-controls="collapseNav">
                         <i class="fa-solid fa-book-bookmark"></i> Libros
                     </a>
-                    <div class="collapse show" id="collapseNav">
+                    <div class="collapse hide" id="collapseNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link ps-18 ps-lg-10" href="{{ route('book.index') }}">
@@ -49,11 +49,6 @@
                                     <i class="fa-solid fa-book-open"></i> Nuevo Libro
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link ps-18 ps-lg-10" href="*">
-                                    <i class="fa-solid fa-book-open-reader"></i> Reportes
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </li>
@@ -62,7 +57,7 @@
                         aria-expanded="false" aria-controls="collapseNav">
                         <i class="fa-solid fa-people-carry-box"></i> Prestamos
                     </a>
-                    <div class="collapse show" id="collapseLoan">
+                    <div class="collapse hide" id="collapseLoan">
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link ps-18 ps-lg-10" href="{{ route('loan.index') }}">
@@ -76,6 +71,12 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('report.index')}}">
+                        <i class="fa-solid fa-book-open-reader"></i> Reportes
+                    </a>
                 </li>
             </ul>
             <!-- Push content down -->

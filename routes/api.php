@@ -3,6 +3,7 @@
 use App\Http\Controllers\BooksController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,3 +36,6 @@ Route::get('/prestamo/buscar-persona', [LoanController::class, 'searchPeople'])-
 
 // DASHBOARD CHARTS
 Route::get('/chart/get-quantity-books', [ChartController::class, 'getQuantityBooks'])->name('chart.getQuantityBooks');
+
+// REPORTES
+Route::get('/report/generate', [ReportController::class, 'generate'])->name('report.generate');

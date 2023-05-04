@@ -44,14 +44,14 @@ class BooksController extends Controller
             'date_of_acq as acquisition', DB::raw("CONCAT('https://covers.openlibrary.org/b/isbn/', REPLACE(isbn, '-', ''), '-L.jpg') AS cover_img"),
             DB::raw("CASE WHEN loans.id IS NULL OR loans.delivery_date IS NOT NULL THEN 'Disponible' ELSE 'Ocupado' END AS status")
         ])
-        ->join('classifications as cl', 'cl.id', 'books.classification_id')
-        ->join('careers', 'careers.id', 'books.area')
-        ->leftJoin('loans', 'loans.book_id', '=', 'books.id');
+            ->join('classifications as cl', 'cl.id', 'books.classification_id')
+            ->join('careers', 'careers.id', 'books.area')
+            ->leftJoin('loans', 'loans.book_id', '=', 'books.id');
 
         if (env('ENCRYPT_PASS') == base64_decode($key)) :
             $edit_url   = DB::raw('CONCAT("' . route('book.edit') . '/", books.id) AS edit_url');
             $delete_url = DB::raw('CONCAT("' . route('book.delete') . '/", books.id) AS delete_url');
-            $data->books->addSelect('books.id as id',$edit_url, $delete_url);
+            $data->books->addSelect('books.id as id', $edit_url, $delete_url);
         endif;
 
         $conditions = [
@@ -86,6 +86,7 @@ class BooksController extends Controller
             $data->books->whereBetween('date_of_acq', [$first_date, $second_date]);
         endif;
 
+        $data->date = Carbon::now()->format('Y-m-d');
         return response()->json(array('books' => $data->books->get(), 'count' => $data->books->count(), 'sql' => toSqlQuery($data->books)));
     }
 
@@ -104,7 +105,6 @@ class BooksController extends Controller
         $areas = Careers::all();
 
         return view('pages.books.edit', compact('book', 'areas'));
-
     }
 
     public function save(Request $r)
@@ -128,7 +128,7 @@ class BooksController extends Controller
             $action                     = "new";
             $msg                        = "Se agregó el libro: " . $r->title;
             $book->created_by           = $r->by_user_id;
-        else:
+        else :
             $book                       = Book::findOrFail($book_id);
             $action                     = "reload";
             $msg                        = "Se ha editado el libro: " . $book->title;
@@ -175,7 +175,8 @@ class BooksController extends Controller
         return response()->json(array('success' => true, 'msg' => $msg, 'table_id' => 'books-table'));
     }
 
-    public function title_list(Request $r){
+    public function title_list(Request $r)
+    {
         $book = Book::select('title')->where('title', 'like', '%' . $r->title)->get();
         return $book;
     }

@@ -5,7 +5,7 @@ export default defineConfig({
     server: {
         hmr: {
             https: true,
-            host: 'biblioteca.test',
+            host: 'biblioteca.local',
         }
     },
     plugins: [
@@ -22,6 +22,8 @@ export default defineConfig({
 
                 // PAGES
                 'resources/js/home.js',
+
+                'resources/js/pages/reports/index.js',
 
                 'resources/js/pages/books/index.js',
                 'resources/js/pages/books/new.js',
