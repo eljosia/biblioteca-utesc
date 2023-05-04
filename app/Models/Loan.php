@@ -40,6 +40,9 @@ class Loan extends Model
         } else if (Carbon::parse($this->return_date)->isPast()) {
             $data->msg = "Atrasado";
             $data->class = "bg-danger";
+        } else {
+            $data->msg = "Prestado";
+            $data->class = "bg-info";
         }
 
         return $data;
