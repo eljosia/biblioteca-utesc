@@ -27,6 +27,7 @@ Route::get('/libros', [BooksController::class, 'list'])->name('book.list');
 Route::get('/libros/titulos', [BooksController::class, 'title_list'])->name('book.title_list');
 Route::post('/libro/guardar', [BooksController::class, 'save'])->name('book.save');
 Route::delete('/libro/borrar/{id?}', [BooksController::class, 'delete'])->name('book.delete');
+Route::get('/libros/guardar_cover', [BooksController::class,'save_cover'])->name('book.save_cover');
 
 // PRESTAMOS
 Route::get('/prestamos', [LoanController::class, 'list'])->name('loan.list');
