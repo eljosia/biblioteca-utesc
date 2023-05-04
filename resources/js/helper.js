@@ -164,3 +164,11 @@ export function deledit_action() {
         }
     })
 }
+
+export function loader_spinner(div, remove = false) {
+    if (remove) {
+        $('.loader').remove();
+    } else {
+        $(div).html('<div class="loader text-center"></div>');
+    }
+}

@@ -75,7 +75,8 @@ class BooksController extends Controller
         if ($search) :
             $data->books->Where('title', 'like', '%' . $search . '%')
                 ->orWhere('autor', 'like', '%' . $search . '%')
-                ->orWhere('editorial', 'like', '%' . $search . '%');
+                ->orWhere('editorial', 'like', '%' . $search . '%')
+                ->orWhere('isbn', 'like', '%' . $search . '%');
         endif;
 
         if ($dates) :

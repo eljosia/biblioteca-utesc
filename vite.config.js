@@ -22,6 +22,7 @@ export default defineConfig({
 
                 // PAGES
                 'resources/js/home.js',
+                'resources/js/search_book.js',
 
                 'resources/js/pages/reports/index.js',
 
