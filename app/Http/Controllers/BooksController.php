@@ -90,6 +90,10 @@ class BooksController extends Controller
             $data->books->whereBetween('date_of_acq', [$first_date, $second_date]);
         endif;
 
+        if ($r->public_search):
+            saveLog('Book', 'search', $search, $r->all(), $r->ip(), 1);
+        endif;
+
         $data->date = Carbon::now()->format('Y-m-d');
         return response()->json(array('books' => $data->books->get(), 'count' => $data->books->count(), 'sql' => toSqlQuery($data->books)));
     }
