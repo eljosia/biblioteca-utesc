@@ -8,10 +8,16 @@ $(document).ready(function () {
         }
     });
 
-    $('#form-search-book').on('submit', function(e){
+    $('#form-search-book').on('submit', function (e) {
         e.preventDefault();
         let book = $('input[name="search"]').val();
-        searchBook(book);
+        if (book.length > 3) {
+            searchBook(book);
+        } else {
+            $('.response-books')
+                .html('<div class="alert-msg text-sm text-center alert alert-info" style="display:none">Ingresa por lo menos 3 letras para buscar un libro</div');
+                $('.alert-msg.alert').fadeIn();
+        }
     })
 });
 
