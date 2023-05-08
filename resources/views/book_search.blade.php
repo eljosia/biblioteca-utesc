@@ -31,6 +31,14 @@
             font-weight: 300;
             line-height: 30px;
         }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 10px;
+        }
     </style>
 </head>
 
@@ -47,7 +55,8 @@
             <div class="col-10 mx-auto text-center">
                 <h1 class="my-1">Buscar Libros:</h1>
                 <div class="input-group input-group-lg d-flex">
-                    <input type="text" class="form-control" placeholder="Titulo, Autor, ISBN ..." name="search" autocomplete="off">
+                    <input type="text" class="form-control" placeholder="Titulo, Autor, ISBN ..." name="search"
+                        autocomplete="off">
                     <button type="submit" class="btn btn-primary" id="btn-search"><i
                             class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
@@ -61,6 +70,24 @@
             </div>
         </div>
     </div>
+
+    <footer>
+        <div class="row justify-content-between">
+            <div class="col-4 text-sm">Powered By <a href="https://portafolio.joseangelrc.com" target="_blank">Jose
+                    A.</a></div>
+            <div class="col-4 text-end text-sm">
+                @auth
+                    <a href="{{ route('dashboard.index') }}">
+                        <i class="fa-solid fa-gauge me-1"></i> Dashboard
+                    </a>
+                @else
+                    <a href="{{ route('login') }}">
+                        <i class="fa-solid fa-right-to-bracket me-1"></i> Iniciar Sesión
+                    </a>
+                @endauth
+            </div>
+        </div>
+    </footer>
 
 
     {{-- SCRIPTS --}}
