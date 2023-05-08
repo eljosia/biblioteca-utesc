@@ -43,11 +43,12 @@ class BooksController extends Controller
         $data = (object)[];
         $data->books = Book::select([
             'title', 'folio', 'isbn', 'autor', 'editorial', 'careers.name as area', 'quantity', 'edition', 'country', 'pages', 'shelf', 'theme',
-            'date_of_acq as acquisition', DB::raw("CONCAT('https://covers.openlibrary.org/b/isbn/', REPLACE(isbn, '-', ''), '-L.jpg') AS cover_img"),
+            'date_of_acq as acquisition',  'cover_books.cover_url as cover_img',
             DB::raw("CASE WHEN loans.id IS NULL OR loans.delivery_date IS NOT NULL THEN 'Disponible' ELSE 'Ocupado' END AS status")
         ])
             ->join('classifications as cl', 'cl.id', 'books.classification_id')
             ->join('careers', 'careers.id', 'books.area')
+            ->join('cover_books', 'cover_books.book_id', 'books.id')
             ->leftJoin('loans', 'loans.book_id', '=', 'books.id');
 
         if (env('ENCRYPT_PASS') == base64_decode($key)) :

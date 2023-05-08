@@ -23,8 +23,7 @@
         }
 
         .content {
-            margin: 15em 4em;
-            text-align: justify;
+            margin-top: 15rem;
         }
 
         p {
@@ -44,25 +43,25 @@
                 <img src="{{ image('logo.png') }}" class="h-24 me-2" alt="...">
             </a>
         </div>
-        <div class="row bg-white">
+        <form action="/api/libros" id="form-search-book" class="row bg-white">
             <div class="col-10 mx-auto text-center">
                 <h1 class="my-1">Buscar Libros:</h1>
                 <div class="input-group input-group-lg d-flex">
-                    <input type="text" class="form-control" placeholder="Titulo, Autor, ISBN ..." name="search">
-                    <button class="btn btn-primary" id="btn-search"><i
+                    <input type="text" class="form-control" placeholder="Titulo, Autor, ISBN ..." name="search" autocomplete="off">
+                    <button type="submit" class="btn btn-primary" id="btn-search"><i
                             class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-    <div class="container">
-        <div class="content">
+    <div class="content row">
+        <div class="col-11 col-md-10 mx-auto">
             <div class="row response-books">
-                
+                {{-- RESULTADOS DE BUSQUEDA --}}
             </div>
         </div>
-
     </div>
+
 
     {{-- SCRIPTS --}}
     @vite(['resources/js/jquery.min.js', 'resources/js/app.js'])
