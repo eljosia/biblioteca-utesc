@@ -21,6 +21,7 @@
         "apexcharts": "^3.37.3",
         "bootstrap": "^5.2.3",
         "chart.js": "^4.3.0",
+        "chartjs-plugin-datalabels": "^2.2.0",
         "clipboard": "^2.0.11",
         "datatables.net": "^1.13.2",
         "datatables.net-bs5": "^1.13.4",

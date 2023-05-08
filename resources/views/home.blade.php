@@ -93,7 +93,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="card shadow p-5">
                 <canvas id="get-quantity-books"></canvas>
             </div>

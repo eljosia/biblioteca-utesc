@@ -13,6 +13,7 @@ import 'air-datepicker/air-datepicker.css';
 import localeEs from 'air-datepicker/locale/es';
 import select2 from 'select2';
 import Chart from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 select2($);
 window.$ = $;
@@ -21,6 +22,7 @@ window.toastr = toastr;
 $.DataTable = dt;
 window.Swal = Swal;
 window.Chart = Chart;
+Chart.register(ChartDataLabels);
 
 window.AirDatepicker = AirDatepicker;
 window.localeEs = localeEs;

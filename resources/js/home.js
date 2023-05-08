@@ -12,7 +12,7 @@ function loadQuantityBooks() {
             var labels = [];
             var values = [];
             $.each(data, function (index, item) {
-                labels.push(item.career);
+                labels.push(`${item.career} (${item.quantity})`);
                 values.push(item.quantity);
             });
 
@@ -42,18 +42,19 @@ function loadQuantityBooks() {
                     plugins: {
                         legend: {
                             display: true,
-                            position: 'right',
+                            position: 'bottom',
                             align: 'center',
                             labels: {
                                 font: {
-                                    size: 10
+                                    size: 8
                                 }
                             }
                         },
                         title: {
                             display: true,
                             text: 'Libros Totales'
-                        }
+                        },
+                        datalabels: false
                     }
                 }
             });
