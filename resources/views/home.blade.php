@@ -123,9 +123,9 @@
                         <table class="table table-sm" id="to-delivery-books">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th class="text-wrap">Nombre</th>
                                     <th>Info</th>
+                                    <th>#</th>
                                 </tr>
                             </thead>
                             <tbody>

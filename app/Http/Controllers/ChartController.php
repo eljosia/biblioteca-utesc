@@ -49,7 +49,7 @@ class ChartController extends Controller
 
     public function getLoansToBeDelivery()
     {
-        $loans = Loan::selectRaw('code, peoples.name, peoples.last_name, peoples.identifier, DATEDIFF(NOW(), return_date) AS days_since_return')
+        $loans = Loan::selectRaw('code, return_date, peoples.name, peoples.last_name, peoples.identifier, DATEDIFF(NOW(), return_date) AS days_since_return')
             ->join('peoples', 'peoples.id', 'loans.people_id')
             ->whereNull('loans.delivery_date')
             ->whereDate('loans.return_date', '<=', now())

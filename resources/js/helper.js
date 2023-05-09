@@ -205,6 +205,18 @@ export async function profile_modal(identifier) {
     let loan = "";
     let people
     let loans
+    $.extend(true, $.fn.dataTable.defaults, {
+        // processing: true,
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/es-MX.json',
+            paginate: {
+                previous: "<",
+                next: '>',
+            },
+        },
+        dom: '<"table-responsive"rt><"bottom row"<"col-12 d-flex justify-content-center"i><"col-12 d-flex justify-content-center"p>>',
+        autoWidth: true,
+    })
 
     await h.getPetition('/api/personas', params, 'GET', true).then(res => {
         console.log(res)
@@ -221,15 +233,25 @@ export async function profile_modal(identifier) {
                     <div class="text-sm"><i class="fa-solid fa-phone me-2"></i> ${people.phone}</div>
                 </div>`;
 
-        $.each(loans, function (i, l) {
-
-            loan += `<tr>
-                    <th><a href="${l.show_url}">${l.code}</a></th>
-                    <td colspan="2" class="text-wrap">${l.title}</td>
-                    <td class="text-center">${(l.delivery_date) ? l.delivery_date : '<span class="badge bg-info">Pendiente</span>'}</td>
-                </tr>`;
+        $('#people-loans-table').DataTable({
+            data: loans,
+            columns: [
+                { data: 'code' },
+                {
+                    data: 'title',
+                    colspan: 2,
+                    render: function (data, type, row, meta) {
+                        return `<span class="text-wrap">${row.title}</span>`;
+                    }
+                },
+                { data: 'return_date' },
+            ],
+            initComplete: function (settings, json) {
+                setTimeout(function () {
+                    $(`#people-loans-table`).removeAttr("style")
+                }, 500)
+            },
         });
     });
     $('#people-info').html(info)
-    $('#people-loans tbody').html(loan)
 }

@@ -14,11 +14,11 @@
                 <div class="row" id="people-loans">
                     <div class="col-12">
                         <h4>Historial de prestamos</h4>
-                        <table class="table table-sm">
+                        <table class="table table-sm" id="people-loans-table">
                             <thead>
                                 <tr>
                                     <th>Folio</th>
-                                    <th colspan="2">Libro</th>
+                                    <th>Libro</th>
                                     <th>Fecha de Entrega</th>
                                 </tr>
                             </thead>
