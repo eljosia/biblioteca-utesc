@@ -75,6 +75,7 @@ export function sendform(id) {
         var errors = document.querySelectorAll('.error');
         var submit = $('button[type=submit]', idform);
         var textSubmit = submit.html();
+        let key = $('meta[name="data-key"]').attr('content');
         let user_id = $('meta[name="data-user"]').attr('content');
 
         $('.error').text('');
@@ -86,6 +87,7 @@ export function sendform(id) {
         });
         let formData = new FormData(idform);
         formData.append('by_user_id', user_id);
+        formData.append('key', key);
 
         $.ajax({
             type: 'POST',
@@ -102,6 +104,8 @@ export function sendform(id) {
                         toast(err.message, 'warning');
                 } else if (err.status == 404) {
                     toast('No se encuentra el ID', 'error');
+                } else if (err.status === 401) {
+                    toast('Ocurrió un error de autorización, recarge la pagina', 'error')
                 } else {
                     reject(err);
                 }
@@ -233,7 +237,7 @@ export async function profile_modal(identifier) {
                 </div>`;
 
         $('#people-loans-table').DataTable({
-            order: [[0,"desc"]],
+            order: [[0, "desc"]],
             pageLength: 5,
             data: loans,
             columns: [

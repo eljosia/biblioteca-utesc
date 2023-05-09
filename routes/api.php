@@ -50,4 +50,5 @@ Route::group(['middleware' => 'apikey'], function () {
 
     //PERSONAS
     Route::get('/personas', [PeopleController::class, 'list'])->name('people.list');
+    Route::post('/persona/guardar', [PeopleController::class, 'save'])->name('people.save');
 });

@@ -7,12 +7,17 @@ $(document).ready(function () {
         let identifier = $('td.open-modal').data('ide');
         h.profile_modal(identifier);
     });
+    const modal_delivery_info = document.getElementById('modal-delivery-info')
+    modal_delivery_info.addEventListener('hidden.bs.modal', event => {
+        $('#people-loans-table').DataTable().destroy();
+    })
 });
 
-function loadQuantityBooks() {
+async function loadQuantityBooks() {
     $.ajax({
         url: '/api/chart/get-quantity-books', // Aquí debes especificar la URL que devuelve los datos
         type: 'GET',
+        data: { key: $('meta[name="data-key"]').attr('content') },
         dataType: 'json',
         success: function (data) {
             // Creamos un array con las etiquetas y otro con los valores
@@ -69,10 +74,11 @@ function loadQuantityBooks() {
     });
 }
 
-function loadDailySearchQuantity() {
+async function loadDailySearchQuantity() {
     $.ajax({
         url: '/api/chart/get-daily-search-quantity', // Aquí debes especificar la URL que devuelve los datos
         type: 'GET',
+        data: { key: $('meta[name="data-key"]').attr('content') },
         dataType: 'json',
         success: function (data) {
             // Creamos un array con las etiquetas y otro con los valores
@@ -116,8 +122,8 @@ function loadDailySearchQuantity() {
     });
 }
 
-function loadLoansToBeDelivery() {
-    h.getPetition('/api/chart/get-loans-to-be-delivery', {}, 'GET').then(res => {
+async function loadLoansToBeDelivery() {
+    await h.getPetition('/api/chart/get-loans-to-be-delivery', {}, 'GET').then(res => {
         var tr = "";
         var status
         if (res.lenght > 0)

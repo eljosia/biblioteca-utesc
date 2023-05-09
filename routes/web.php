@@ -3,6 +3,7 @@
 use App\Http\Controllers\BooksController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -43,4 +44,9 @@ Route::middleware([
 
     // Reportes
     Route::get('/reportes', [ReportController::class, 'index'])->name('report.index');
+
+    // Personas
+    Route::get('/personas', [PeopleController::class, 'index'])->name('people.index');
+    Route::get('/personas/nuevo', [PeopleController::class, 'new'])->name('people.new');
+    Route::get('/persona/editar/{identifier?}', [PeopleController::class, 'edit'])->name('people.edit');
 });

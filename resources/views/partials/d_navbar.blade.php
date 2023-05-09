@@ -78,6 +78,12 @@
                         <i class="fa-solid fa-book-open-reader"></i> Reportes
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('people.index')}}">
+                        <i class="fa-solid fa-person"></i> Personas
+                    </a>
+                </li>
             </ul>
             <!-- Push content down -->
             <div class="mt-auto"></div>

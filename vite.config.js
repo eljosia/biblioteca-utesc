@@ -34,6 +34,10 @@ export default defineConfig({
                 'resources/js/pages/loans/new.js',
                 'resources/js/pages/loans/show.js',
 
+                'resources/js/pages/peoples/index.js',
+                'resources/js/pages/peoples/new.js',
+
+
             ],
             refresh: true,
         }),
