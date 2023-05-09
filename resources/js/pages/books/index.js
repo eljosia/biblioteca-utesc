@@ -90,9 +90,9 @@ $(document).ready(function () {
         console.log("Procesing")
     });
 
-    book_table.on('draw.dt', function () {
-        $(`#${table_id} tbody`).find('tr').eq(0).remove();
-    });
+    // book_table.on('draw.dt', function () {
+    //     $(`#${table_id} tbody`).find('tr').eq(0).remove();
+    // });
 
     new AirDatepicker('#datefilter', {
         locale: localeEs,
