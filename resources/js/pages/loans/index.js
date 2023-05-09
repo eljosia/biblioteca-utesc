@@ -20,6 +20,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 'bearer': $('meta[name="data-key"]').attr('content'),
             },
+            data: {key:$('meta[name="data-key"]').attr('content')},
             url: $(`#${table_id}`).data('url'),
             dataSrc: "loans",
             beforeSend: function () {

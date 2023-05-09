@@ -32,7 +32,9 @@ $(document).ready(function () {
         var formData = {
             type: $('select[name="type"]').val(),
             area_id: $('select[name="area_id"]').val(),
-            fechas: $('input[name="datefilter"]').val()
+            fechas: $('input[name="datefilter"]').val(),
+            key: $('meta[name="data-key"]').attr('content'),
+
         };
 
         // Remover parámetros vacíos
