@@ -105,7 +105,8 @@
                                     <input type="text" class="form-control inp" name="date_of_pub" value="{{$book->date_of_pub}}">
                                 </div>
 
-                                <div class="col-12">
+                                <div class="col-12 text-end">
+                                    <input type="hidden" name="cover_url" value="{{$book->cover_img}}">
                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
                             </form>

@@ -43,6 +43,7 @@ async function searchCover(url, cover) {
 
             // MOSTRAMOS
             $('#previewimg').html(`<img src="${thumbnail}" style="width:100%">`);
+            $('input[name="cover_url"]').val(thumbnail);
         } else {
             h.toast("No se pudo cargar la imagen", "warning");
         }
