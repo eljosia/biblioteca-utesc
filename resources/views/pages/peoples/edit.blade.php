@@ -5,7 +5,9 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('people.index') }}">Personas</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Editar Persona</li>
+            <li class="breadcrumb-item">Editar</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ $data->people->name }} {{ $data->people->last_name }}
+            </li>
         </ol>
     </nav>
 @endsection
@@ -22,12 +24,14 @@
                         <div class="row mb-3">
                             <div class="col-md-6 px-3">
                                 <label for="" class="form-label">Nombre:</label>
-                                <input type="text" name="name" class="form-control" placeholder="Nombre" value="{{$data->people->name}}">
+                                <input type="text" name="name" class="form-control" placeholder="Nombre"
+                                    value="{{ $data->people->name }}">
                                 <span class="error text-danger font-bold" data-name="name"></span>
                             </div>
                             <div class="col-md-6 px-3">
                                 <label for="" class="form-label">Apellidos</label>
-                                <input type="text" name="last_name" class="form-control" placeholder="Apellidos" value="{{$data->people->last_name}}">
+                                <input type="text" name="last_name" class="form-control" placeholder="Apellidos"
+                                    value="{{ $data->people->last_name }}">
                                 <span class="error text-danger font-bold" data-name="last_name"></span>
                             </div>
                         </div>
@@ -35,21 +39,25 @@
                         <div class="row mb-3">
                             <div class="col-md-4 px-3">
                                 <label for="" class="form-label">Identificador:</label>
-                                <input type="text" name="identifier" class="form-control" placeholder="Matrícula/ID" value="{{$data->people->identifier}}" readonly>
+                                <input type="text" name="identifier" class="form-control" placeholder="Matrícula/ID"
+                                    value="{{ $data->people->identifier }}" readonly>
                                 <span class="error text-danger font-bold" data-name="identifier"></span>
                                 <div id="identifierHelp" class="form-text">Ingrésa la matrícula del alumno/profesor o los 9
                                     dígitos que se encuentran al reverso del INE</div>
                             </div>
                             <div class="col-md-4 px-3">
                                 <label for="" class="form-label">Teléfono</label>
-                                <input type="text" name="phone" class="form-control" placeholder="xxx-xxx-xxxx" value="{{$data->people->phone}}">
+                                <input type="text" name="phone" class="form-control" placeholder="xxx-xxx-xxxx"
+                                    value="{{ $data->people->phone }}">
                                 <span class="error text-danger font-bold" data-name="phone"></span>
                             </div>
                             <div class="col-md-4 px-3">
                                 <label for="" class="form-label">Carrera:</label>
                                 <select name="career_id" class="form-control">
                                     @foreach ($data->career as $career)
-                                        <option value="{{ $career->id }}" {{($career->id == $data->people->career_id) ? 'selected' : ''}}>{{ $career->name }}</option>
+                                        <option value="{{ $career->id }}"
+                                            {{ $career->id == $data->people->career_id ? 'selected' : '' }}>
+                                            {{ $career->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -57,7 +65,7 @@
 
                         <div class="row mb-3">
                             <div class="col-12 text-end">
-                                <input type="hidden" readonly value="{{$data->people->id}}" name="people_id">
+                                <input type="hidden" readonly value="{{ $data->people->id }}" name="people_id">
                                 <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
                             </div>
                         </div>

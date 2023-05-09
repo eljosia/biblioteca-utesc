@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Prestamos de Libros')
+@section('title', 'Agregar Persona')
 @section('breadcrumb')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
