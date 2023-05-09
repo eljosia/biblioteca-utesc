@@ -14,6 +14,9 @@ import localeEs from 'air-datepicker/locale/es';
 import select2 from 'select2';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { format, formatDistanceToNow, formatDistance } from 'date-fns';
+import differenceInDays from 'date-fns/differenceInDays'
+import { es } from 'date-fns/locale';
 
 select2($);
 window.$ = $;
@@ -26,6 +29,12 @@ Chart.register(ChartDataLabels);
 
 window.AirDatepicker = AirDatepicker;
 window.localeEs = localeEs;
+
+window.datefns_format = format;
+window.datefns_formatDistanceToNow = formatDistanceToNow;
+window.datefns_formatDistance = formatDistance;
+window.datefns_differenceInDays = differenceInDays;
+window.datefns_es = es;
 
 window.Toast = Swal.mixin({
     toast: true,

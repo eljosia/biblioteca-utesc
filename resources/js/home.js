@@ -1,5 +1,12 @@
 $(document).ready(function () {
     loadQuantityBooks();
+    loadDailySearchQuantity();
+    loadLoansToBeDelivery();
+
+    $('body').on("click", 'td.open-modal', function () {
+        let identifier = $('td.open-modal').data('ide');
+        h.profile_modal(identifier);
+    });
 });
 
 function loadQuantityBooks() {
@@ -19,7 +26,7 @@ function loadQuantityBooks() {
             // Creamos la gráfica utilizando Chart.js
             var ctx = document.getElementById('get-quantity-books').getContext('2d');
             var myChart = new Chart(ctx, {
-                type: 'pie',
+                type: 'doughnut',
                 data: {
                     labels: labels,
                     datasets: [{
@@ -42,7 +49,7 @@ function loadQuantityBooks() {
                     plugins: {
                         legend: {
                             display: true,
-                            position: 'bottom',
+                            position: 'right',
                             align: 'center',
                             labels: {
                                 font: {
@@ -51,7 +58,7 @@ function loadQuantityBooks() {
                             }
                         },
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Libros Totales'
                         },
                         datalabels: false
@@ -59,5 +66,72 @@ function loadQuantityBooks() {
                 }
             });
         }
+    });
+}
+
+function loadDailySearchQuantity() {
+    $.ajax({
+        url: '/api/chart/get-daily-search-quantity', // Aquí debes especificar la URL que devuelve los datos
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            // Creamos un array con las etiquetas y otro con los valores
+            var labels = [];
+            var values = [];
+            $.each(data, function (index, item) {
+
+                labels.push(h.dateAgo(item.date));
+                values.push(item.count);
+            });
+
+            // Creamos la gráfica utilizando Chart.js
+            var ctx = document.getElementById('get-daily-search').getContext('2d');
+            var daily_search = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Busquedas de libros',
+                        data: values,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false,
+                            position: 'top',
+                        },
+                        title: {
+                            display: false,
+                            text: 'Busquedas diarias de libros'
+                        }
+                    }
+                }
+            });
+        }
+    });
+}
+
+function loadLoansToBeDelivery() {
+    h.getPetition('/api/chart/get-loans-to-be-delivery', {}, 'GET').then(res => {
+        var tr = "";
+        var status
+        $.each(res, function (i, item) {
+            if (item.days_since_return == 0) {
+                status = '<span class="badge bg-warning">Hoy</span>';
+            } else {
+                status = `<span class="badge bg-danger">-${item.days_since_return} dias</span>`;
+            }
+            tr += ` <tr>
+                        <td class="text-sm open-modal" data-ide="${item.identifier}" data-bs-toggle="modal" data-bs-target="#modal-delivery-info"><i class="fa-regular fa-eye"></i></td>
+                        <td class="text-xs text-wrap">${item.name} ${item.last_name} (${item.identifier})</td>
+                        <td>${status}</td>
+                    </tr>`;
+        });
+        $('#to-delivery-books tbody').html(tr)
     });
 }

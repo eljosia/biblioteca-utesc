@@ -24,7 +24,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Libros (Totales)</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models\Book::count()}}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ \App\Models\Book::count() }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa-solid fa-book fa-2x"></i>
@@ -42,7 +42,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     Libros (Prestados)</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models\Loan::count()}}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ \App\Models\Loan::count() }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa-solid fa-people-carry-box fa-2x"></i>
@@ -93,12 +93,54 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow p-5">
-                <canvas id="get-quantity-books"></canvas>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-9 pe-md-1">
+            <div class="row">
+                <div class="col-md-7 mb-3 pe-md-1">
+                    <div class="h3 mb-3">Busqueda diaria de libros</div>
+                    <div class="card shadow p-5" style="height: 100%">
+                        <canvas id="get-daily-search" class="my-auto"></canvas>
+                    </div>
+                </div>
+
+                <div class="col-md-5 mb-3 ps-md-1">
+                    <div class="h3 mb-3">Libros Totales</div>
+                    <div class="card shadow p-5" style="height: 100%">
+                        <canvas id="get-quantity-books" class="my-auto"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 ps-md-1">
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <div class="h3 mb-3">Entregas de Libros</div>
+                    <div class="card shadow p-3" style="height: 100%">
+                        <table class="table table-sm" id="to-delivery-books">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th class="text-wrap">Nombre</th>
+                                    <th>Info</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
+@endsection
+@section('modals')
+    @include('partials.modals._m_people_info')
 @endsection
 @section('scripts')
     @vite(['resources/js/home.js'])

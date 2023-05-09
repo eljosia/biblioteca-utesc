@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="data-key" content="{{base64_encode(env('ENCRYPT_PASS'))}}">
+    <meta name="data-key" content="{{ base64_encode(env('ENCRYPT_PASS')) }}">
     <meta name="data-user" content="{{ Auth::id() }}">
 
     <!-- CSRF Token -->
@@ -25,6 +25,12 @@
 
     @vite(['resources/css/loader.css'])
     @yield('css')
+
+    {{-- SCRIPTS --}}
+    @vite(['resources/js/jquery.min.js', 'resources/js/app.js'])
+    @vite(['resources/js/datatables/jquery.dataTables.min.js', 'resources/js/datatables/dataTables.min.js'])
+    @yield('scripts')
+
 </head>
 
 <body class="bg-white">
@@ -54,7 +60,7 @@
                     </div>
                 </div>
             </header>
-            <main class="py-10 px-3 px-lg-7 ">
+            <main class="py-10 px-3">
                 <!-- Container -->
                 <div class="container-xl">
                     @yield('content')
@@ -63,10 +69,7 @@
         </div>
     </div>
 
-    {{-- SCRIPTS --}}
-    @vite(['resources/js/jquery.min.js', 'resources/js/app.js'])
-    @vite(['resources/js/datatables/jquery.dataTables.min.js', 'resources/js/datatables/dataTables.min.js'])
-    @yield('scripts')
+    @yield('modals')
 </body>
 
 </html>

@@ -52,6 +52,8 @@ export function getPetition(path, params, type = 'POST', async = true) {
                         toast(err.message, 'warning');
                 } else if (err.status == 404) {
                     toast('No se encuentra el ID', 'error');
+                } else if (err.status === 401) {
+                    toast('Ocurrió un error de autorización, recarge la pagina', 'error')
                 } else {
                     reject(err);
                 }
@@ -171,4 +173,63 @@ export function loader_spinner(div, remove = false) {
     } else {
         $(div).html('<div class="loader text-center"></div>');
     }
+}
+
+export function dateAgo(ndate) {
+    let date = new Date(ndate);
+    let now = new Date();
+    const weekdays = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
+    let diff = datefns_differenceInDays(date, now, { locale: datefns_es });
+
+    // return weekdays[date.getDay()];
+
+    if (diff == 0) {
+        return `Hoy`;
+    } else if (diff == -1) {
+        return `Ayer`;
+    } else if (diff == -2) {
+        return `Antier`;
+    } else {
+        return weekdays[date.getDay()];
+    }
+}
+
+export async function profile_modal(identifier) {
+    $('#modal-delivery-info .identifier').text(identifier);
+    h.loader_spinner('#modal-delivery-info #people-info');
+    h.loader_spinner('#people-loans tbody');
+
+    let params = { search: true, identifier: identifier }
+    let info = "";
+    let loan = "";
+    let people
+    let loans
+
+    await h.getPetition('/api/personas', params, 'GET', true).then(res => {
+        console.log(res)
+        people = res.people;
+        loans = res.loans;
+
+        info += `<div class="col-md-3 text-center">
+                    <img src="/images/avatar.png" class="rounded-circle avatar img-fluid" alt="" style="width:80px !important; height:80px !important;">
+                </div>
+                <div class="col-md-9">
+                    <span class="name font-bold h3">${people.name} ${people.last_name}</span><br>
+                    <span class="identifier text-muted text-sm"> ${people.identifier}</span>
+                    <div class="text-sm"><i class="fa-solid fa-helmet-safety me-1 mt-3"></i> ${people.career}</div>
+                    <div class="text-sm"><i class="fa-solid fa-phone me-2"></i> ${people.phone}</div>
+                </div>`;
+
+        $.each(loans, function (i, l) {
+
+            loan += `<tr>
+                    <th><a href="${l.show_url}">${l.code}</a></th>
+                    <td colspan="2" class="text-wrap">${l.title}</td>
+                    <td class="text-center">${(l.delivery_date) ? l.delivery_date : '<span class="badge bg-info">Pendiente</span>'}</td>
+                </tr>`;
+        });
+    });
+    $('#people-info').html(info)
+    $('#people-loans tbody').html(loan)
 }
