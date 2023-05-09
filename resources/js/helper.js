@@ -198,7 +198,6 @@ export function dateAgo(ndate) {
 export async function profile_modal(identifier) {
     $('#modal-delivery-info .identifier').text(identifier);
     h.loader_spinner('#modal-delivery-info #people-info');
-    h.loader_spinner('#people-loans tbody');
 
     let params = { search: true, identifier: identifier }
     let info = "";
@@ -234,6 +233,8 @@ export async function profile_modal(identifier) {
                 </div>`;
 
         $('#people-loans-table').DataTable({
+            order: [[0,"desc"]],
+            pageLength: 5,
             data: loans,
             columns: [
                 { data: 'code' },
@@ -244,7 +245,12 @@ export async function profile_modal(identifier) {
                         return `<span class="text-wrap">${row.title}</span>`;
                     }
                 },
-                { data: 'return_date' },
+                {
+                    data: 'return_date',
+                    render: function (data, type, row, meta) {
+                        return loan_status(row.return_date, row.delivery_date)
+                    }
+                },
             ],
             initComplete: function (settings, json) {
                 setTimeout(function () {
@@ -254,4 +260,28 @@ export async function profile_modal(identifier) {
         });
     });
     $('#people-info').html(info)
+}
+
+export function loan_status(ndate, delivery_date) {
+    // Crear un objeto de fecha con la fecha que deseas comparar
+    const fechaDeseada = new Date(ndate);
+    // Crear un objeto de fecha con la fecha actual
+    const fechaActual = new Date();
+
+    // Si delivery_date no es nulo quiere decir que ya lo entregó.
+    if (delivery_date) {
+        return `<span class="badge bg-success">Entregado</span>`;
+    }
+
+    // Comparar las fechas utilizando el método getTime() y devolver "atraso" si la fecha deseada ha pasado
+    if (fechaDeseada.getDate() === fechaActual.getDate() &&
+        fechaDeseada.getMonth() === fechaActual.getMonth() &&
+        fechaDeseada.getFullYear() === fechaActual.getFullYear()) {
+        return `<span class="badge bg-warning">Hoy</span>`;
+    }
+    else if (fechaDeseada.getDay() < fechaActual.getDay()) {
+        return `<span class="badge bg-danger">Atrasado</span>`;
+    } else {
+        return `<span class="badge bg-secondary">Pendiente</span>`;
+    }
 }

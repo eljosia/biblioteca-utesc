@@ -19,7 +19,7 @@
                                 <tr>
                                     <th>Folio</th>
                                     <th>Libro</th>
-                                    <th>Fecha de Entrega</th>
+                                    <th>Estatus</th>
                                 </tr>
                             </thead>
                             <tbody>

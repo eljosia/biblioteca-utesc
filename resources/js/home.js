@@ -120,18 +120,24 @@ function loadLoansToBeDelivery() {
     h.getPetition('/api/chart/get-loans-to-be-delivery', {}, 'GET').then(res => {
         var tr = "";
         var status
-        $.each(res, function (i, item) {
-            if (item.days_since_return == 0) {
-                status = `<span class="badge bg-warning">Hoy</span>`;
-            } else {
-                status = `<span class="badge bg-danger">${h.dateAgo(item.return_date)}</span>`;
-            }
-            tr += ` <tr>
+        if (res.lenght > 0)
+            $.each(res, function (i, item) {
+                if (item.days_since_return == 0) {
+                    status = `<span class="badge bg-warning">Hoy</span>`;
+                } else {
+                    status = `<span class="badge bg-danger">${h.dateAgo(item.return_date)}</span>`;
+                }
+                tr += ` <tr>
                         <td class="text-xs text-wrap">${item.name} ${item.last_name} (${item.identifier})</td>
                         <td>${status}</td>
                         <td class="text-sm open-modal" data-ide="${item.identifier}" data-bs-toggle="modal" data-bs-target="#modal-delivery-info"><i class="fa-regular fa-eye"></i></td>
                     </tr>`;
-        });
+            });
+        else {
+            tr += `<tr>
+                        <td colspan="3" class="text-center">No hay libros por entregar</td>
+                    </tr>`;
+        }
         $('#to-delivery-books tbody').html(tr)
     });
 }
