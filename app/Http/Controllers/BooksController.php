@@ -164,6 +164,11 @@ class BooksController extends Controller
             $book->date_of_acq          = Carbon::createFromFormat('Y-m-d H:i:s', $r->date_of_acq . ' 00:00:00');
             $book->save();
 
+            DB::table('cover_books')->insert([
+                "cover_url" => $r->cover_url,
+                "book_id" => $book->id
+            ]);
+
             saveLog('Book', 'save', $msg, $r->all(), $r->ip(), $r->by_user_id, $book->id);
             return response()->json(array('success' => true, 'msg' => $msg, 'action' => $action));
         } catch (Exception $e) {

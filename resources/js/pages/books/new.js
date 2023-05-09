@@ -87,6 +87,7 @@ async function searchBook(url, cover, searchbtn, isbn) {
 
             // MOSTRAMOS
             $('#previewimg').html(`<img src="${thumbnail}" style="width:100%">`);
+            $('input[name="cover_url"]').val(thumbnail);
             $('input[name="title"]').val(title);
             $('input[name="autor"]').val(authors);
             $('input[name="description"]').val(desc);

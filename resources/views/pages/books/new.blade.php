@@ -109,6 +109,7 @@
                                       </div>
                                 </div>
                                 <div class="col-12 text-end">
+                                    <input type="hidden" name="cover_url">
                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
                             </form>
