@@ -58,17 +58,18 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Usuarios Premium
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Libros (Falta de Entrega)
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{}
+                                        @php $loans = new \App\Models\Loan; @endphp
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$loans->expired()}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-rocket fa-2x text-gray-300"></i>
+                                <i class="fa-solid fa-book-open fa-2x text-gray-300"></i> 
                             </div>
                         </div>
                     </div>
@@ -81,12 +82,12 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Pending Requests</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Personas Registradas</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ \App\Models\People::count() }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                <i class="fa-solid fa-people-group fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>

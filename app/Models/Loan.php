@@ -47,4 +47,11 @@ class Loan extends Model
 
         return $data;
     }
+
+    function expired()
+    {
+        return $this->where('return_date', '<', now())
+            ->whereNull('delivery_date')
+            ->count();
+    }
 }
