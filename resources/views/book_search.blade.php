@@ -73,7 +73,7 @@
 
     <footer>
         <div class="row justify-content-between">
-            <div class="col-4 text-sm">Powered By <a href="https://portafolio.joseangelrc.com" target="_blank">Jose
+            <div class="col-4 text-sm">Powered By <a href="#">Jose
                     A.</a></div>
             <div class="col-4 text-end text-sm">
                 @auth
