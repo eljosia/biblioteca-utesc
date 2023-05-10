@@ -59,10 +59,12 @@ class PeopleController extends Controller
             $people = new People();
             $msg = "Se ha guardado una nueva persona.";
             $event = "Save";
+            $people->created_by = $r->by_user_id;
         } else {
             $people = People::findOrFail($r->people_id);
             $msg = "Se ha editado correctamente: "  . $people->name;
             $event = "Update";
+            $people->updated_by = $r->by_user_id;
         }
 
         try {

@@ -97,8 +97,11 @@ class LoanController extends Controller
         $people = People::where('identifier', $r->identifier);
         if ($people->count() > 0) {
             $people = $people->first();
+            $people->updated_by = $r->by_user_id;
+
         } else {
             $people = new People();
+            $people->created_by = $r->by_user_id;
         }
 
         try {
