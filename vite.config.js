@@ -37,6 +37,7 @@ export default defineConfig({
                 'resources/js/pages/peoples/index.js',
                 'resources/js/pages/peoples/new.js',
 
+                'resources/js/pages/config/index.js',
 
             ],
             refresh: true,

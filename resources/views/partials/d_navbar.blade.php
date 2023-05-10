@@ -84,6 +84,12 @@
                         <i class="fa-solid fa-person"></i> Personas
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('config.index')}}">
+                        <i class="fa-solid fa-gear"></i> Configuración
+                    </a>
+                </li>
             </ul>
             <!-- Push content down -->
             <div class="mt-auto"></div>

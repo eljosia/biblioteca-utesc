@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BooksController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\PeopleController;
@@ -49,4 +50,7 @@ Route::middleware([
     Route::get('/personas', [PeopleController::class, 'index'])->name('people.index');
     Route::get('/personas/nuevo', [PeopleController::class, 'new'])->name('people.new');
     Route::get('/persona/editar/{identifier?}', [PeopleController::class, 'edit'])->name('people.edit');
+
+    // Configuracion
+    Route::get('/configuracion', [ConfigController::class, 'index'])->name('config.index');
 });
