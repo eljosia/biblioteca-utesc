@@ -3732,6 +3732,11 @@ class BookSeeder extends Seeder
             array('id' => '4370', 'folio' => 'A03716', 'isbn' => '978-607-9432-10-2', 'title' => 'LA OBRA EDUCATIVA QUE TRANSFORMÓ SINALOA', 'autor' => 'GUERRA MIGUEL', 'description' => NULL, 'editorial' => 'UDEO', 'area' => 'Otros', 'quantity' => '1', 'edition' => 'PRIMERA EDICIÓN', 'country' => 'MÉXICO', 'date_of_pub' => '2016-04-20', 'pages' => '164', 'shelf' => '800', 'status' => '1', 'created_by' => '3', 'updated_by' => '3', 'classification_id' => '81', 'date_of_acq' => '2023-04-10', 'created_at' => '2023-04-21 04:01:26', 'updated_at' => '2023-04-20 21:14:06', 'deleted_at' => NULL, 'donated' => '0')
         );
 
-        DB::table('books')->insert($books);
+        // Dividir los datos en lotes de 1000
+        $chunks = array_chunk($books, 1000);
+
+        foreach ($chunks as $chunk) {
+            DB::table('books')->insert($chunk);
+        }
     }
 }

@@ -28,8 +28,6 @@ toastr.options = {
 h = {
     getPetition: (path, params, type = 'POST', async = true) => {
         return getPetition = new Promise((resolve, reject) => {
-            var spinner = '<div class="lds-facebook"><div></div><div></div><div></div></div>';
-            var blockUI = blockUI('#kt_app_body', spinner);
             let token = $('meta[name="csrf-token"]').attr('content');
             let user_id = $('meta[name="data-user"]').attr('content');
             let _token = { '_token': token, 'api': true, 'by_user_id': user_id };
@@ -61,21 +59,20 @@ h = {
                     }
                 },
                 beforeSend: function () {
-                    blockUI.block();
+                    // blockUI.block();
                 },
                 complete: function () {
-                    blockUI.release();
+                    // blockUI.release();
                 }
             });
         });
     },
-    sendForm: (id, target = '#kt_app_body') => {
+    sendForm: (id) => {
         return sendForm = new Promise(function (resolve, reject) {
             var idform = id;
             var url = $(idform).attr('action');
             var errors = document.querySelectorAll('.error');
             var submit = $('button[type=submit]', idform);
-            var blockUI = blockUI(target);
             var textSubmit = submit.html();
             let user_id = $('meta[name="data-user"]').attr('content');
             $('.error').text('');
@@ -113,11 +110,11 @@ h = {
                 beforeSend: function () {
                     //   submit.html('<i class="fas fa-spinner fa-spin"></i>');
                     submit.prop('disabled', true);
-                    blockUI.block();
+                    // blockUI.block();
                 },
                 complete: function () {
                     submit.prop('disabled', false);
-                    blockUI.block();
+                    // blockUI.block();
                 }
             });
         })

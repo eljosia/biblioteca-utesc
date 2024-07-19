@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityLogController;
+use Illuminate\Support\Str;
 
 if (!function_exists('theme')) {
     function theme()
@@ -454,5 +455,11 @@ if (!function_exists('verify_jcrypt')) {
     function verify_jcrypt($hash)
     {
         return password_verify(config('app.authkey'), $hash);
+    }
+}
+if (!function_exists('toSqlQuery')) {
+    function toSqlQuery($query)
+    {
+        return Str::replaceArray('?', $query->getBindings(), $query->toSql());
     }
 }

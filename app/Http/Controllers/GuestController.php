@@ -8,7 +8,7 @@ class GuestController extends Controller
 {
     public function index()
     {
-        // return view('pages.guest.index');
-        return redirect('/dashboard');
+        return view('pages.search.index');
+        // return redirect('/dashboard');
     }
 }
