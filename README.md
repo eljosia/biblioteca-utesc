@@ -1,18 +1,14 @@
+# Iniciando
+
+Iniciando el proyecto
+
 # Requerimientos
 
 	- PHP >= 8.0
 
 # Instalación
 
-### Primeros Pasos
-
-Clona el proyecto
-
-    git clone https://github.com/eljosia/biblioteca-utesc.git
-
-#### Ingresa a la carpeta del proyecto
-
-### Laravel
+## Laravel
 
 Instalación básica de laravel con composer
 
@@ -20,7 +16,7 @@ Instalación básica de laravel con composer
 composer upgrade && install
 ```
 
-### NPM
+## NPM
 
 Inicializando
 
@@ -56,7 +52,7 @@ Recuerda cambiar el app key (`php artisan key:generate`) y el dominio en el cual
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
-    DB_DATABASE=biblioteca
+    DB_DATABASE=metronic
     DB_USERNAME=root
     DB_PASSWORD=
 
@@ -102,3 +98,15 @@ Recuerda cambiar el app key (`php artisan key:generate`) y el dominio en el cual
     GOOGLE_CLIENT_ID=447077588182-tnre8e7pgrbjn37f9lnhgvaf4b6n9d31.apps.googleusercontent.com
     GOOGLE_CLIENT_SECRET=p_iV57unO0h1i2OJap4dsSmI
     GOOGLE_CALLBACK_URL=http://127.0.0.1:8000/auth/redirect/google
+
+
+
+
+## Testing
+
+Lo usuarios para testing son:
+```jsx
+	- Admin: demo@demo.com | demo
+```
+
+La clave es la misma para todos: **adminanen**
