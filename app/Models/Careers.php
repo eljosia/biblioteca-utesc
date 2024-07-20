@@ -9,4 +9,9 @@ class Careers extends Model
 {
     use HasFactory;
     protected $table = 'careers';
+
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'area');
+    }
 }

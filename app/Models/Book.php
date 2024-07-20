@@ -35,4 +35,8 @@ class Book extends Model
     {
         return $this->belongsTo(Classification::class);
     }
+    public function career()
+    {
+        return $this->belongsTo(Careers::class, 'area');
+    }
 }
