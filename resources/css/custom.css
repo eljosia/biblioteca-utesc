@@ -1,6 +1,8 @@
 .rounded {
-    border-radius: 50%; /* Borde completamente redondeado */
-  }
+  border-radius: 50%;
+  /* Borde completamente redondeado */
+}
+
 .bg-ut {
   background-color: #3BBBA8 !important;
 }

@@ -20,46 +20,46 @@
 
             .menu-item {                    
                 .menu-heading {
-                    color: var(--#{$prefix}app-sidebar-light-menu-heading-color) !important;
+                    color: $white !important;
                 }
 
                 @include menu-link-default-state( 
-                    $title-color: var(--#{$prefix}gray-700), 
-                    $icon-color: var(--#{$prefix}gray-500), 
-                    $bullet-color: var(--#{$prefix}gray-500), 
-                    $arrow-color: var(--#{$prefix}gray-500),
+                    $title-color: $white, 
+                    $icon-color: $white,
+                    $bullet-color: $white,
+                    $arrow-color: $white,
                     $bg-color: null  
                 );
                 
                 @include menu-link-hover-state( 
-                    $title-color: var(--#{$prefix}gray-900), 
-                    $icon-color: var(--#{$prefix}gray-700), 
-                    $bullet-color: var(--#{$prefix}gray-700), 
-                    $arrow-color: var(--#{$prefix}gray-700), 
-                    $bg-color: null
+                    $title-color: $white, 
+                    $icon-color: $white,
+                    $bullet-color: $white,
+                    $arrow-color: $white,
+                    $bg-color: null  
                 );
                 
                 @include menu-link-show-state( 
-                    $title-color: var(--#{$prefix}gray-900), 
-                    $icon-color: var(--#{$prefix}gray-700), 
-                    $bullet-color: var(--#{$prefix}gray-700), 
-                    $arrow-color: var(--#{$prefix}gray-700), 
-                    $bg-color: null
+                    $title-color: $white, 
+                    $icon-color: $white,
+                    $bullet-color: $white,
+                    $arrow-color: $white,
+                    $bg-color: null  
                 );
                 
                 @include menu-link-here-state( 
-                    $title-color: var(--#{$prefix}gray-900), 
-                    $icon-color: var(--#{$prefix}gray-700), 
-                    $bullet-color: var(--#{$prefix}gray-700), 
-                    $arrow-color: var(--#{$prefix}gray-700), 
-                    $bg-color: null
+                    $title-color: $white, 
+                    $icon-color: $white,
+                    $bullet-color: $white,
+                    $arrow-color: $white,
+                    $bg-color: null  
                 );
 
                 @include menu-link-active-state( 
-                    $title-color: var(--#{$prefix}primary), 
-                    $icon-color: var(--#{$prefix}primary), 
-                    $bullet-color: var(--#{$prefix}primary), 
-                    $arrow-color: var(--#{$prefix}primary), 
+                    $title-color: $white, 
+                    $icon-color: $white,
+                    $bullet-color: $white,
+                    $arrow-color: $white,
                     $bg-color: var(--#{$prefix}app-sidebar-light-menu-link-bg-color-active)
                 );
             }
