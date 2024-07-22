@@ -45,7 +45,7 @@ Route::middleware(['authkey'])->group(function () {
     Route::get('/chart/get-loans-to-be-delivery', [ChartController::class, 'getLoansToBeDelivery'])->name('chart.getLoansToBeDelivery');
 
     // REPORTES
-    Route::get('/report/generate', [ReportController::class, 'generate'])->name('report.generate');
+    // Route::get('/report/generate', [ReportController::class, 'generate'])->name('report.generate');
 
 
     //PERSONAS

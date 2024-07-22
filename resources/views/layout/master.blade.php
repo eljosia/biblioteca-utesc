@@ -40,6 +40,7 @@
     @foreach (getCustomCss() as $path)
         {!! sprintf('<link rel="stylesheet" href="%s">', asset($path)) !!}
     @endforeach
+    @stack('style')
     <!--end::Custom Stylesheets-->
 </head>
 <!--end::Head-->

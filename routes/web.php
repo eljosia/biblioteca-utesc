@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Reportes
     Route::get('/reportes', [ReportController::class, 'index'])->name('report.index');
+    Route::get('/report/generate', [ReportController::class, 'generater'])->name('report.generate');
 
     // Personas
     Route::get('/personas', [PeopleController::class, 'index'])->name('people.index');

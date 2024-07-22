@@ -12,8 +12,8 @@
             <div data-kt-menu-trigger="click" class="menu-item">
                 <!--begin::Menu item-->
                 <div class="menu-item">
-                    <a href="#" class="menu-link">
-						<span class="menu-icon">{!! getIcon('element-11', 'fs-2') !!}</span>
+                    <a href="{{route('dashboard.index')}}" class="menu-link">
+                        <span class="menu-icon">{!! getIcon('element-11', 'fs-2 text-white') !!}</span>
                         <span class="menu-title">Dashboard</span>
                     </a>
                 </div>
@@ -25,6 +25,46 @@
                 <!--begin:Menu content-->
                 <div class="menu-content">
                     <span class="menu-heading fw-bold text-uppercase fs-7">Pages</span>
+
+                    <!--begin:Menu item-->
+                    <div data-kt-menu-trigger="click" class="menu-item">
+                        <!--begin::Menu item-->
+                        <div class="menu-item">
+                            <a href="#" class="menu-link">
+                                <span class="menu-icon">{!! getIcon('book', 'fs-2 text-white') !!}</span>
+                                <span class="menu-title">Libros</span>
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
+
+                        <!--begin::Menu item-->
+                        <div class="menu-item">
+                            <a href="#" class="menu-link">
+                                <span class="menu-icon">{!! getIcon('courier', 'fs-2 text-white') !!}</span>
+                                <span class="menu-title">Prestamos</span>
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
+
+                        <!--begin::Menu item-->
+                        <div class="menu-item">
+                            <a href="{{route('report.index')}}" class="menu-link">
+                                <span class="menu-icon">{!! getIcon('tablet-text-down', 'fs-2 text-white') !!}</span>
+                                <span class="menu-title">Reportes</span>
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
+
+                        <!--begin::Menu item-->
+                        <div class="menu-item">
+                            <a href="#" class="menu-link">
+                                <span class="menu-icon">{!! getIcon('profile-user', 'fs-2 text-white') !!}</span>
+                                <span class="menu-title">Personas</span>
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
+                    </div>
+                    <!--end:Menu item-->
                 </div>
                 <!--end:Menu content-->
             </div>

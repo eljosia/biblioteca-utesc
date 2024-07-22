@@ -1,11 +1,4 @@
 const env = $('meta[name="env"]').attr('content');
-function blockUI(target, message = '<div class="blockui-message"><span class="spinner-border text-primary"></span> Cargando ...</div>') {
-    target = document.querySelector(target)
-    return new KTBlockUI(target, {
-        message: message,
-        overlayClass: "bg-dark bg-opacity-50",
-    });
-}
 
 toastr.options = {
     "closeButton": true,
