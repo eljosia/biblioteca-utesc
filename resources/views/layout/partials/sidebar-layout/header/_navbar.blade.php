@@ -1,6 +1,6 @@
 <!--begin::Navbar-->
 <div class="app-navbar flex-shrink-0">
-    <!--begin::Notifications-->
+    {{-- <!--begin::Notifications-->
     <div class="app-navbar-item ms-1 ms-md-3">
         <!--begin::Menu- wrapper-->
         <div class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px"
@@ -9,7 +9,7 @@
         @include('partials/menus/_notifications-menu')
         <!--end::Menu wrapper-->
     </div>
-    <!--end::Notifications-->
+    <!--end::Notifications--> --}}
     <!--begin::Theme mode-->
     <div class="app-navbar-item ms-1 ms-md-3">
         @include('partials/theme-mode/_main')
