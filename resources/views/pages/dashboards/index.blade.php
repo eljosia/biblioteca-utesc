@@ -145,7 +145,7 @@
         <!--end::Col-->
 
         <div class="col-12 col-md-8">
-            
+
         </div>
     </div>
     <!--end::Row-->
@@ -180,21 +180,29 @@
                                 console.error('Data is not in the expected format');
                                 return;
                             }
-                            var data = parsedData.original;
-                            console.log('Data:', data); // Depuración
 
-                            const categories = data.map(item => item
-                                .shelf); // Asegúrate de usar el nombre correcto
-                            const totals = data.map(item => item.total); // Asegúrate de usar el nombre correcto
+                            var data = parsedData.original;
+
+                            // Verificar que los datos sean válidos
+                            if (!data.length) {
+                                console.error('Data array is empty');
+                                return;
+                            }
+
+                            // Mapear categorías y totales
+                            const categories = data.map(item => item.shelf ||
+                            ''); // Asegúrate de usar el nombre correcto
+                            const totals = data.map(item => item.total ||
+                            0); // Asegúrate de usar el nombre correcto
 
                             if (categories.length === 0 || totals.length === 0) {
                                 console.error('Categories or totals are empty');
                                 return;
                             }
 
-                            var height = parseInt(KTUtil.css(element, 'height'));
-                            var labelColor = KTUtil.getCssVariableValue('--bs-gray-900');
-                            var borderColor = KTUtil.getCssVariableValue('--bs-border-dashed-color');
+                            var height = parseInt(KTUtil.css(element, 'height')) || 400; // Valor predeterminado
+                            var labelColor = KTUtil.getCssVariableValue('--bs-gray-900') || '#000';
+                            var borderColor = KTUtil.getCssVariableValue('--bs-border-dashed-color') || '#ddd';
 
                             var options = {
                                 series: [{
@@ -249,7 +257,7 @@
                                     },
                                     labels: {
                                         style: {
-                                            colors: KTUtil.getCssVariableValue('--bs-gray-500'),
+                                            colors: KTUtil.getCssVariableValue('--bs-gray-500') || '#666',
                                             fontSize: '13px'
                                         }
                                     },
@@ -265,7 +273,7 @@
                                 yaxis: {
                                     labels: {
                                         style: {
-                                            colors: KTUtil.getCssVariableValue('--bs-gray-500'),
+                                            colors: KTUtil.getCssVariableValue('--bs-gray-500') || '#666',
                                             fontSize: '13px'
                                         },
                                         formatter: function(val) {
@@ -307,9 +315,8 @@
                                         }
                                     }
                                 },
-                                colors: [KTUtil.getCssVariableValue('--bs-primary'), KTUtil
-                                    .getCssVariableValue(
-                                        '--bs-primary-light')
+                                colors: [KTUtil.getCssVariableValue('--bs-primary') || '#007bff', KTUtil
+                                    .getCssVariableValue('--bs-primary-light') || '#cce5ff'
                                 ],
                                 grid: {
                                     borderColor: borderColor,
@@ -347,6 +354,7 @@
                         }
                     }
                 }();
+
 
                 if (typeof module !== 'undefined') {
                     module.exports = KTChartsWidget38;
