@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ActivityLogController;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
+use NumberToWords\NumberToWords;
 
 if (!function_exists('theme')) {
     function theme()
@@ -416,7 +418,7 @@ if (!function_exists('image')) {
      */
     function image($path)
     {
-        return asset('assets/media/' . $path);
+        return asset('/images/' . $path);
     }
 }
 
@@ -461,5 +463,18 @@ if (!function_exists('toSqlQuery')) {
     function toSqlQuery($query)
     {
         return Str::replaceArray('?', $query->getBindings(), $query->toSql());
+    }
+}
+if (!function_exists('calculateDays')) {
+    function calculateDays($date1, $date2)
+    {
+        $date1 = Carbon::parse($date1);
+        $date2 = Carbon::parse($date2);
+        $diffDays = $date1->diffInDays($date2);
+
+        $numberToWords = new NumberToWords();
+        $numberTransformer = $numberToWords->getNumberTransformer('es');
+
+        return $numberTransformer->toWords($diffDays);
     }
 }

@@ -1,4 +1,4 @@
-<x-slot name="page_title">{{ $data->page_title }}</x-slot>
+<x-slot name="page_title">{!! $data->page_title !!}</x-slot>
 @if ($data->breadcrumb)
     <x-slot name="breadcrumb">
         @foreach ($data->breadcrumb as $li)
@@ -20,7 +20,8 @@
                 <a href="#" class="{{ $btn['class'] }}" data-bs-toggle="modal"
                     data-bs-target="#{{ $btn['modal'] }}">{{ $btn['text'] }}</a>
             @elseif(isset($btn['link']))
-                <a href="{{ $btn['link'] }}" class="{{ $btn['class'] }}">
+                <a href="{{ $btn['link'] }}" class="{{ $btn['class'] }}"
+                    {{ isset($btn['target']) ? "target='" . $btn['target'] . "'" : '' }}>
                     <i class="las {{ @$btn['icon'] }}"></i>
                     {{ $btn['text'] }}
                 </a>

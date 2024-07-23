@@ -22,6 +22,11 @@ class Loan extends Model
         return $this->belongsTo(People::class);
     }
 
+    function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     function book()
     {
         return $this->belongsTo(Book::class);

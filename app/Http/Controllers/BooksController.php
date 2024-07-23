@@ -45,6 +45,7 @@ class BooksController extends Controller
 
     public function list(Request $r)
     {
+        // dd($r->all());
         $key        = ($r->header('bearer')) ? $r->header('bearer') : $r->key;
         $search     = $r->input('search');
         // $title      = $r->input('titulo');

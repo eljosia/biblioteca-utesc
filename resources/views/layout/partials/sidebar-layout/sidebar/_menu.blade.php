@@ -39,7 +39,7 @@
 
                         <!--begin::Menu item-->
                         <div class="menu-item">
-                            <a href="#" class="menu-link">
+                            <a href="{{route('loan.index')}}" class="menu-link">
                                 <span class="menu-icon">{!! getIcon('courier', 'fs-2 text-white') !!}</span>
                                 <span class="menu-title">Prestamos</span>
                             </a>

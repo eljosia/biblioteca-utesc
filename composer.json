@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "barryvdh/laravel-dompdf": "^2.2",
         "guzzlehttp/guzzle": "^7.2",
+        "kwn/number-to-words": "^2.9",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.0",
         "laravel/socialite": "^5.6",
