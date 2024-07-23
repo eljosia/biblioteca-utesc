@@ -106,12 +106,12 @@
 <body>
     <htmlpageheader name="page-header">
         <div id="header" class="text-center">
-            <img alt="Logo" src="http://biblioteca-utesc.local//images/header_membrete.png" class="imgheader" />
+            <img alt="Logo" src="{{image('header_membrete.png')}}" class="imgheader" />
         </div>
     </htmlpageheader>
     <htmlpagefooter name="page-footer">
         <div id="footer" class="text-center">
-            <img src="http://biblioteca-utesc.local//images/footer_membrete.png" alt="" class="imgfooter">
+            <img src="{{image('footer_membrete.png')}}" alt="" class="imgfooter">
         </div>
     </htmlpagefooter>
 
