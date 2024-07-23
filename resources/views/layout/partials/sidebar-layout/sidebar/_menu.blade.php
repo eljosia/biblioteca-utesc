@@ -30,7 +30,7 @@
                     <div data-kt-menu-trigger="click" class="menu-item">
                         <!--begin::Menu item-->
                         <div class="menu-item">
-                            <a href="#" class="menu-link">
+                            <a href="{{route('book.index')}}" class="menu-link">
                                 <span class="menu-icon">{!! getIcon('book', 'fs-2 text-white') !!}</span>
                                 <span class="menu-title">Libros</span>
                             </a>

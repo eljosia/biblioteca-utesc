@@ -97,13 +97,15 @@
                     toggleBlockUI(true);
 
                     h.getPetition(url, {
-                            search: book,
+                            search: {
+                                "value": book
+                            },
                             public_search: true
                         }, 'GET')
                         .then(response => {
                             console.log(response);
                             toggleBlockUI(false);
-                            var data = response.books;
+                            var data = response.data;
                             if (data.length > 0) {
                                 var book_col = '';
                                 $.each(data, function(i, book) {

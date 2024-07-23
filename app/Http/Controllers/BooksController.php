@@ -20,26 +20,42 @@ class BooksController extends Controller
     public function index()
     {
         $data = (object)[];
-        $data->loadbook = route('book.list');
-        $data->areas    = Book::select('area')->groupBy('area')->get();
+        $data->page_title = "Lista de Libros";
+        $data->breadcrumb = [
+            ['link' => route('dashboard.index'), 'text' => 'Dashboard'],
+            ['link' => route('book.index'), 'text' => 'Libros'],
+            ['text' => 'Listado']
+        ];
 
-        return view('pages.books.index', compact('data'));
+        $data->buttons = [
+            ['link' => route('book.new'), 'class' => 'btn btn-sm fw-bold btn-primary', 'text' => 'Nuevo', 'icon' => 'la-plus']
+        ];
+
+
+        $data->table = (object)[];
+        $data->table->list      = route('book.list');
+        $data->table->js        = 'book-table';
+
+        // $data->modals = [
+        //     ['include' => 'pages.dashboards.products.modals._m_change-price']
+        // ];
+
+        return view('pages.dashboards.datatable', compact('data'));
     }
 
     public function list(Request $r)
     {
-        // dd($r->all());
         $key        = ($r->header('bearer')) ? $r->header('bearer') : $r->key;
         $search     = $r->input('search');
-        $title      = $r->input('titulo');
-        $folio      = $r->input('folio');
-        $isbn       = $r->input('isbn');
-        $autor      = $r->input('autor');
-        $area       = $r->input('area');
-        $country    = $r->input('pais');
-        $shelf      = $r->input('estante');
-        $theme      = $r->input('clasificacion');
-        $dates      = $r->input('fechas');
+        // $title      = $r->input('titulo');
+        // $folio      = $r->input('folio');
+        // $isbn       = $r->input('isbn');
+        // $autor      = $r->input('autor');
+        // $area       = $r->input('area');
+        // $country    = $r->input('pais');
+        // $shelf      = $r->input('estante');
+        // $theme      = $r->input('clasificacion');
+        // $dates      = $r->input('fechas');
 
         $data = (object)[];
         $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d');
@@ -62,73 +78,89 @@ class BooksController extends Controller
             DB::raw('MAX(cover_books.cover_url) as cover_img'),
             DB::raw("CASE WHEN MAX(loans.id) IS NULL OR MAX(loans.delivery_date) IS NOT NULL THEN 'Disponible' ELSE 'Ocupado' END AS status"),
             DB::raw("MAX(books.created_at) as created_at"),
-            DB::raw("CASE WHEN MAX(books.created_at) BETWEEN '$startOfWeek' AND '$endOfWeek' THEN '1' ELSE '0' END AS is_new")
+            DB::raw("CASE WHEN MAX(books.created_at) BETWEEN '$startOfWeek' AND '$endOfWeek' THEN '1' ELSE '0' END AS is_new"),
+            'books.id',
+            DB::raw('CONCAT("' . route('book.edit') . '/", books.id) AS edit_url'),
+            DB::raw('CONCAT("' . route('book.delete') . '/", books.id) AS delete_url')
         ])
             ->join('classifications as cl', 'cl.id', 'books.classification_id')
             ->join('careers', 'careers.id', 'books.area')
             ->join('cover_books', 'cover_books.book_id', 'books.id')
-            ->leftJoin('loans', 'loans.book_id', '=', 'books.id')
-            ->where(function ($query) {
-                $query->where('title', 'like', '%hack%')
-                    ->orWhere('autor', 'like', '%hack%')
-                    ->orWhere('editorial', 'like', '%hack%')
-                    ->orWhere('isbn', 'like', '%hack%');
-            })
-            ->whereNull('books.deleted_at');
-            
+            ->leftJoin('loans', 'loans.book_id', '=', 'books.id');
+
+        if (isset($search)) :
+            if (isset($search['value'])) :
+                $conditions = [
+                    ['title', $search['value'], 'like'],
+                    ['folio', $search['value'], 'like'],
+                    ['isbn', str_replace('-', '', $search['value']), 'like'],
+                    ['autor', $search['value'], 'like'],
+                    ['careers.name', $search['value'], 'like'],
+                    ['country', $search['value'], 'like'],
+                    ['shelf', $search['value'], 'like'],
+                    ['theme', $search['value'], 'like'],
+                ];
+                foreach ($conditions as $condition) {
+                    list($field, $value, $operator) = $condition;
+
+                    if (!empty($value)) {
+                        if ($field == 'isbn') {
+                            $data->books->whereRaw("REPLACE(isbn, '-', '') $operator ?", ["%$value%"]);
+                        } else {
+                            $data->books->orWhere($field, $operator, "%$value%");
+                        }
+                    }
+                }
+            endif;
+
+            if (isset($search['area']) && $search['area'] !== "all") :
+                $data->books->where('area', $search['area']);
+            endif;
+
+            if (isset($search['datefilter'])) :
+                $date = explode(' - ', $search['datefilter']);
+                $first_date = Carbon::createFromFormat('d/m/Y', $date[0]);
+                $second_date = Carbon::createFromFormat('d/m/Y', $date[1]);
+    
+                $data->books->whereBetween('date_of_acq', [$first_date, $second_date]);
+            endif;
+        endif;
 
         if (!$r->public_search) :
-            $edit_url   = DB::raw('CONCAT("' . route('book.edit') . '/", books.id) AS edit_url');
+            $edit_url = DB::raw('CONCAT("' . route('book.edit') . '/", books.id) AS edit_url');
             $delete_url = DB::raw('CONCAT("' . route('book.delete') . '/", books.id) AS delete_url');
             $data->books->addSelect('books.id as id', $edit_url, $delete_url);
         endif;
 
-        $conditions = [
-            ['title', $title, 'like'],
-            ['folio', $folio, 'like'],
-            ['isbn', str_replace('-', '', $isbn), 'like'],
-            ['autor', $autor, 'like'],
-            ['careers.name', $area, 'like'],
-            ['country', $country, 'like'],
-            ['shelf', $shelf, 'like'],
-            ['theme', $theme, 'like'],
-        ];
-        foreach ($conditions as $condition) {
-            list($field, $value, $operator) = $condition;
-        
-            if (!empty($value)) {
-                if ($field == 'isbn') {
-                    // Aplica el reemplazo de guiones para el campo isbn
-                    $data->books->whereRaw("REPLACE(isbn, '-', '') $operator ?", ["%$value%"]);
-                } else {
-                    // Aplica el operador y el valor de búsqueda
-                    $data->books->where($field, $operator, "%$value%");
-                }
-            }
-        }
-
-        if ($search) :
-            $data->books->Where('title', 'like', '%' . $search . '%')
-                ->orWhere('autor', 'like', '%' . $search . '%')
-                ->orWhere('editorial', 'like', '%' . $search . '%')
-                ->orWhere('isbn', 'like', '%' . $search . '%');
-        endif;
-
-        if ($dates) :
-            $date        = explode(' - ', $dates);
-            $first_date     = Carbon::createFromFormat('d/m/Y', $date[0]);
-            $second_date    = Carbon::createFromFormat('d/m/Y', $date[1]);
-
-            $data->books->whereBetween('date_of_acq', [$first_date, $second_date]);
-        endif;
-
         if ($r->public_search) :
-            saveLog('Book', 'search', $search, $r->all(), $r->ip(), 1);
+            saveLog('Book', 'search', json_encode($search), $r->all(), $r->ip(), 1);
         endif;
-        $data->books = $data->books->groupBy('title', 'isbn');
+
+
+        $data->books = $data->books
+            ->whereNull('books.deleted_at')
+            ->groupBy([
+                'isbn',
+                'books.id',
+                'title',
+                'folio',
+                'autor',
+                'editorial',
+                'careers.name',
+                'edition',
+                'country',
+                'pages',
+                'shelf',
+                'theme',
+                'date_of_acq',
+                'cover_books.cover_url',
+                'loans.id',
+                'loans.delivery_date',
+                'books.created_at'
+            ]);
 
         $data->date = Carbon::now()->format('Y-m-d');
-        return response()->json(array('books' => $data->books->get(), 'count' => $data->books->count(), 'sql' => toSqlQuery($data->books)));
+        return response()->json(array('data' => $data->books->get(), 'count' => $data->books->count(), 'sql' => toSqlQuery($data->books)));
     }
 
     public function new()

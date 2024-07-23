@@ -176,3 +176,6 @@ function getParameters() {
 }
 
 mix.copy(`resources/js/helpers.js`, `public/js/helper.js`).version();
+
+// TABLAS
+mix.js(`resources/js/tables/book-table.js`, `public/js/scripts/datatables/book-table.js`).version();
