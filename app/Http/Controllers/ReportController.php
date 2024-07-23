@@ -136,6 +136,7 @@ class ReportController extends Controller
             ->groupBy('careers.name')->get();
 
         $data->date = Carbon::now()->format('Y-m-d');
+        $data->books->orderBy('folio', 'asc');
         $data->books = $data->books->get();
 
         $html = view('pages.dashboards.reports._pdf', compact('data'))->render();
