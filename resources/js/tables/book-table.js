@@ -108,7 +108,7 @@ var KTDatatablesServerSide = function () {
                                 <span class="path2"></span>
                             </i>
                         </a>
-                        <a href="#" data-url="${row.delete_url}" data-action="delete">
+                        <a href="#" class="btn-del" data-url="${row.delete_url}" data-action="delete">
                             <i class="ki-duotone ki-trash-square fs-2">
                                 <span class="path1"></span>
                                 <span class="path2"></span>
@@ -216,4 +216,41 @@ $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) 
 
 $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
     $(this).val('');
+});
+
+$('body').on('click', '.btn-del', function (e) {
+    e.preventDefault();
+    console.log("data-action");
+
+    var $this = this;
+    var url = $($this).data('url');
+    var ID = $($this).data('id');
+
+    Swal.fire({
+        title: '¿Confirma eliminarlo?',
+        text: "Una vez hecho esto, no podrás deshacer esta acción",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f36',
+        cancelButtonColor: '#cfd6df',
+        confirmButtonText: 'Confirmar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            h.getPetition(url, { id: ID }, 'DELETE', false).then(data => {
+                if (data.success == true) {
+                    toastr.success(data.msg);
+                    if (data.action) {
+                        setTimeout(function () {
+                            location.href = data.action;
+                        }, 2000)
+                    } else {
+                        $(`#${data.table_id}`).DataTable().ajax.reload();
+                    }
+                } else {
+                    toastr.error((data.msg) ? data.msg : 'Ha ocurrido un error', "Ops...",);
+                    console.log(data)
+                }
+            });
+        }
+    })
 });

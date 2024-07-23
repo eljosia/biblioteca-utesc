@@ -121,7 +121,7 @@ class BooksController extends Controller
                 $date = explode(' - ', $search['datefilter']);
                 $first_date = Carbon::createFromFormat('d/m/Y', $date[0]);
                 $second_date = Carbon::createFromFormat('d/m/Y', $date[1]);
-    
+
                 $data->books->whereBetween('date_of_acq', [$first_date, $second_date]);
             endif;
         endif;
@@ -166,18 +166,41 @@ class BooksController extends Controller
     public function new()
     {
         $data = (object)[];
+        $data->page_title = "Nuevo Libro";
+        $data->breadcrumb = [
+            ['link' => route('dashboard.index'), 'text' => 'Dashboard'],
+            ['link' => route('book.index'), 'text' => 'Libros'],
+            ['text' => 'Nuevo Libro']
+        ];
+
+        $data->buttons = [];
+
         $data->classifications  = Classification::all();
         $data->area             = Careers::all();
 
-        return view('pages.books.new', compact('data'));
+        return view('pages.dashboards.books.form', compact('data'));
     }
 
     public function edit($id)
     {
         $book = Book::findOrFail($id);
         $areas = Careers::all();
+        $data = (object)[];
+        $data->page_title = "Editar Libro";
+        $data->breadcrumb = [
+            ['link' => route('dashboard.index'), 'text' => 'Dashboard'],
+            ['link' => route('book.index'), 'text' => 'Libros'],
+            ['text' => $book->title]
+        ];
 
-        return view('pages.books.edit', compact('book', 'areas'));
+        $data->book = $book;
+        $data->area = $areas;
+        $data->classifications  = Classification::all();
+        $data->buttons = [];
+
+
+        return view('pages.dashboards.books.form', compact('data'));
+
     }
 
     public function save(Request $r)
@@ -200,12 +223,12 @@ class BooksController extends Controller
             $book                       = new Book();
             $action                     = "new";
             $msg                        = "Se agregó el libro: " . $r->title;
-            $book->created_by           = $r->by_user_id;
+            $book->created_by           = base64_decode($r->by_user_id);
         else :
             $book                       = Book::findOrFail($book_id);
             $action                     = "reload";
             $msg                        = "Se ha editado el libro: " . $book->title;
-            $book->updated_by           = $r->by_user_id;
+            $book->updated_by           = base64_decode($r->by_user_id);
 
         endif;
 
@@ -234,10 +257,13 @@ class BooksController extends Controller
                 "book_id" => $book->id
             ]);
 
-            saveLog('Book', 'save', $msg, $r->all(), $r->ip(), $r->by_user_id, $book->id);
+            saveLog('Book', 'save', $msg, $r->all(), $r->ip(), base64_decode($r->by_user_id), $book->id);
+
             return response()->json(array('success' => true, 'msg' => $msg, 'action' => $action));
         } catch (Exception $e) {
-            saveLog('Book', 'save', $e->getMessage(), $r->all(), $r->ip(), $r->by_user_id);
+            // dd($e);
+
+            saveLog('Book', 'save', $e->getMessage(), $r->all(), $r->ip(), base64_decode($r->by_user_id));
             return response()->json(array('success' => false, 'msg' => 'Se ha producido un error al guardar el libro'));
         }
     }
@@ -249,8 +275,8 @@ class BooksController extends Controller
         $book->delete();
         $msg = "Se ha borrado el libro correctamente.";
 
-        saveLog('Book', 'delete', $msg, $r->all(), $r->ip(), $r->by_user_id, $book_id);
-        return response()->json(array('success' => true, 'msg' => $msg, 'table_id' => 'books-table'));
+        saveLog('Book', 'delete', $msg, $r->all(), $r->ip(), base64_decode($r->by_user_id), $book_id);
+        return response()->json(array('success' => true, 'msg' => $msg, 'table_id' => 'book-table'));
     }
 
     public function title_list(Request $r)

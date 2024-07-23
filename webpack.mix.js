@@ -6,7 +6,7 @@ const rimraf = require('rimraf');
 const WebpackRTLPlugin = require('webpack-rtl-plugin');
 const del = require('del');
 const fs = require('fs');
-
+const { default: Swal } = require("sweetalert2");
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -33,7 +33,7 @@ mix.options({
 });
 
 // Remove existing generated assets from public folder
-del.sync(['public/assets/*',]);
+// del.sync(['public/assets/*',]);
 
 // Build 3rd party plugins css/js
 mix.sass('resources/mix/plugins.scss', `public/assets/plugins/global/plugins.bundle.css`).then(() => {
