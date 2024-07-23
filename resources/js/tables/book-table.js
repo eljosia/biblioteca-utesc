@@ -7,21 +7,35 @@ var KTDatatablesServerSide = function () {
     var table;
     var dt;
     var filterPayment;
+    var data = {
+        'search': {
+            "value": $('#search').val(),
+            "area": ($('#area').length) ? $('#area').val() : null,
+            "datefilter": ($('#datefilter').length) ? $('#datefilter').val() : null
+        }
+    };
 
     // Private functions
     var initDatatable = function () {
         dt = $("#" + table_id).DataTable({
-            searchDelay: 500,
+            searchDelay: 1000,
             processing: true,
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/es-MX.json',
+                paginate: {
+                    previous: "<",
+                    next: '>',
+                },
+            },
+            dom: '<"table-responsive"rt><"bottom row"<"col-12 d-flex justify-content-center"i><"col-12 d-flex justify-content-center"p>>',
             order: [
                 [2, 'asc']
             ],
-            stateSave: true,
-            select: {
-                style: 'multi',
-                selector: 'td:first-child input[type="checkbox"]',
-                className: 'row-selected'
-            },
+            columnDefs: [{
+                targets: 0, // El índice de la columna oculta
+                visible: false, // Ocultar la columna
+                searchable: true // Hacer que la columna sea buscable
+            }],
             ajax: {
                 type: 'GET',
                 headers: {
@@ -29,43 +43,60 @@ var KTDatatablesServerSide = function () {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     'Authorization': 'Bearer ' + $('meta[name="auth-key"]').attr('content'),
                 },
-                url: $(`#${table_id}`).data('url')
+                url: $(`#${table_id}`).data('url'),
+                data: function (d) {
+                    return $.extend({}, d, data);
+                }
             },
             columns: [{
-                data: 'title'
+                data: 'created_at'
+            }, {
+                data: 'title',
+                title: 'Titulo',
             },
             {
-                data: 'folio'
+                data: 'folio',
+                title: 'Folio'
             },
             {
-                data: 'isbn'
+                data: 'isbn',
+                title: 'ISBN'
             },
             {
-                data: 'autor'
+                data: 'autor',
+                title: 'Autor'
             },
             {
-                data: 'editorial'
+                data: 'editorial',
+                title: 'Editorial'
             },
             {
-                data: 'area'
+                data: 'area',
+                title: 'Area'
             },
             {
-                data: 'quantity'
+                data: 'quantity',
+                title: 'Cantidad'
             },
             {
-                data: 'edition'
+                data: 'edition',
+                title: 'Edición'
             },
             {
-                data: 'country'
+                data: 'country',
+                title: 'País'
             },
             {
-                data: 'pages'
+                data: 'pages',
+                title: 'Páginas'
             },
             {
-                data: 'shelf'
+                data: 'shelf',
+                title: 'Estante'
             },
             {
-                data: 'theme'
+                data: 'theme',
+                title: 'Tema'
             }, {
                 data: 'edit_url',
                 render: function (data, type, row, meta) {
@@ -112,12 +143,56 @@ var KTDatatablesServerSide = function () {
             dt.search(e.target.value).draw();
         });
     }
+    var handleFilterDatatable = () => {
 
+        // Filter datatable on submit
+        if ($('#area').length) {
+            console.log("Aqui");
+            $('#area').on('change', function (e) {
+                // data.search.area = e.target.value;
+                // dt.search($('#search').val()).draw();
+                if (e.target.value == "all") {
+                    dt.column(6).search("").draw();
+                } else {
+                    dt.column(6).search(e.target.value).draw();
+                }
+            });
+        }
+
+        if ($('#datefilter').length) {
+            $('#datefilter').on('apply.daterangepicker', function (ev, picker) {
+                var startDate = picker.startDate.format('YYYY-MM-DD');
+                var endDate = picker.endDate.format('YYYY-MM-DD');
+
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        var date = data[0].split('T')[0]; // Obtener solo la parte de la fecha
+
+                        if (date >= startDate && date <= endDate) {
+                            return true;
+                        }
+                        return false;
+                    }
+                );
+
+                dt.draw();
+                $.fn.dataTable.ext.search.pop();
+            });
+
+            $('#datefilter').on('cancel.daterangepicker', function (ev, picker) {
+                $('#datefilter').val('');
+                $.fn.dataTable.ext.search.pop();
+                dt.draw();
+            });
+
+        }
+    }
     // Public methods
     return {
         init: function () {
             initDatatable();
             handleSearchDatatable();
+            handleFilterDatatable();
         }
     }
 }();
@@ -125,4 +200,20 @@ var KTDatatablesServerSide = function () {
 // On document ready
 KTUtil.onDOMContentLoaded(function () {
     KTDatatablesServerSide.init();
+});
+
+$('input[name="datefilter"]').daterangepicker({
+    autoUpdateInput: false,
+    locale: {
+        cancelLabel: 'Clear'
+    }
+});
+
+$('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format(
+        'MM/DD/YYYY'));
+});
+
+$('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+    $(this).val('');
 });
