@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,8 @@ Route::middleware(['authkey'])->group(function () {
     // REPORTES
     // Route::get('/report/generate', [ReportController::class, 'generate'])->name('report.generate');
 
+    // SETTINGS
+    Route::post('/settings/save', [SettingController::class, 'save'])->name('setting.save');
 
     //PERSONAS
     Route::get('/personas', [PeopleController::class, 'list'])->name('people.list');

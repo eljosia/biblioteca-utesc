@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('header_membrete');
-            $table->string('footer_membrete');
+            $table->string('pdf_header')->nullable();
+            $table->string('pdf_footer')->nullable();
             $table->unsignedBigInteger('created_by')->nullable()->default(1);
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');

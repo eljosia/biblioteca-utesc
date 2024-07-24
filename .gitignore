@@ -16,3 +16,10 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+storage/images/header_membrete.jpeg
+storage/images/header_membrete.png
+storage/images/header_membrete.gif
+storage/images/footer_membrete.jpeg
+storage/images/footer_membrete.png
+storage/images/footer_membrete.gif
+public/images/*

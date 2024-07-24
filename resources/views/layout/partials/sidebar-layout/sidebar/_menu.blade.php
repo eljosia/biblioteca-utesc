@@ -63,6 +63,15 @@
                             </a>
                         </div>
                         <!--end::Menu item-->
+
+                        <!--begin::Menu item-->
+                        <div class="menu-item">
+                            <a href="{{route('setting.index')}}" class="menu-link">
+                                <span class="menu-icon">{!! getIcon('gear', 'fs-2 text-white') !!}</span>
+                                <span class="menu-title">Ajustes</span>
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
                     </div>
                     <!--end:Menu item-->
                 </div>
