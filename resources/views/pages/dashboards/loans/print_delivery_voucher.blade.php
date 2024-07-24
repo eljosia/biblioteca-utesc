@@ -1,3 +1,6 @@
+@php
+    $setting = \App\Models\Setting::first();
+@endphp
 <!DOCTYPE html>
 <html lang="es">
 
@@ -204,7 +207,7 @@
 <body>
     <div class="A1">
         <header class="text-center">
-            <img alt="Logo" src="{{ image('header_membrete.png') }}" class="logo" />
+            <img alt="Logo" src="{{$setting->pdf_header}}" class="logo" />
         </header>
         <main>
             <h1>COMPROBANTE DE LIBRO RECIBIDO</h1>
@@ -284,7 +287,7 @@
             </div>
         </main>
         <footer>
-            <img src="{{ image('footer_membrete.png') }}" alt="">
+            <img src="{{$setting->pdf_footer}}" alt="">
         </footer>
     </div>
 </body>

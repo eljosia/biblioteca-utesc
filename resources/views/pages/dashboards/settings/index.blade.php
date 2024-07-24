@@ -160,12 +160,12 @@
                                         <div class="row mt-12">
                                             <div class="col-md-9 offset-md-3">
                                                 <!--begin::Cancel-->
-                                                <button type="button" class="btn btn-light me-3">Cancel</button>
+                                                <a href="{{route('dashboard.index')}}" class="btn btn-light me-3">Cancelar</a>
                                                 <!--end::Cancel-->
                                                 <!--begin::Button-->
                                                 <button type="submit" class="btn btn-primary"
                                                     id="kt_file_manager_settings_submit">
-                                                    <span class="indicator-label">Save</span>
+                                                    <span class="indicator-label">Guardar</span>
                                                     <span class="indicator-progress">Please wait...
                                                         <span
                                                             class="spinner-border spinner-border-sm align-middle ms-2"></span></span>

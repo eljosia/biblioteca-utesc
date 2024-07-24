@@ -1,3 +1,6 @@
+@php
+    $setting = \App\Models\Setting::first();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -106,12 +109,12 @@
 <body>
     <htmlpageheader name="page-header">
         <div id="header" class="text-center">
-            <img alt="Logo" src="{{image('header_membrete.png')}}" class="imgheader" />
+            <img alt="Logo" src="{{$setting->pdf_header}}" class="imgheader" />
         </div>
     </htmlpageheader>
     <htmlpagefooter name="page-footer">
         <div id="footer" class="text-center">
-            <img src="{{image('footer_membrete.png')}}" alt="" class="imgfooter">
+            <img src="{{$setting->pdf_footer}}" alt="" class="imgfooter">
         </div>
     </htmlpagefooter>
 
