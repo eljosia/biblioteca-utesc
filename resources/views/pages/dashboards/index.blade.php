@@ -6,7 +6,7 @@
     <!--begin::Row-->
     <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
         <!--begin::Col-->
-        <div class="col-xl-4">
+        <div class="col-xl-3">
             <!--begin::Chart widget 19-->
             <div class="card card-flush mb-5 mb-xl-10">
                 <!--begin::Header-->
@@ -106,41 +106,69 @@
         </div>
         <!--end::Col-->
         <!--begin::Col-->
-        <div class="col-xl-8 mb-xl-10">
+        <div class="col-xl-9 mb-xl-10">
+            <div class="row mb-5 mb-xl-10">
+
+                <div class="col-12 col-sm-8">
+                    <div class="card mb-5 mb-xl-10">
+                        <!--begin::Header-->
+                        <div class="card-header pt-7">
+                            <!--begin::Title-->
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-800">Libros por Estante</span>
+                            </h3>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+
+                        <div class="card-body d-flex align-items-end px-0 pt-3 pb-5">
+                            <!--begin::Chart-->
+                            <div id="chart-books_by_shelf" data-get='@json($data->shelfs)'
+                                class="h-325px w-100 min-h-auto ps-4 pe-6"></div>
+                            <!--end::Chart-->
+                        </div>
+                        <!--end: Card Body-->
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4">
+                    <div class="card p-40 h-100">
+                        <div class="card-header pt-7">
+                            <!--begin::Title-->
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-900">Libros Donados/Comprados</span>
+                            </h3>
+                            <!--end::Title-->
+                        </div>
+
+                        <div class="card-body pt-0">
+                            <div id="chart-typeBook" data-donated="{{ $data->typebook->donated }}"
+                                data-buyed="{{ $data->typebook->buyed }}" class="min-h-auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!--begin::Chart widget 38-->
             <div class="card mb-5 mb-xl-10">
-                <!--begin::Header-->
                 <div class="card-header pt-7">
                     <!--begin::Title-->
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bold text-gray-800">Libros por Estante</span>
-                    </h3>
-                    <!--end::Title-->
-                </div>
-                <!--end::Header-->
-                <!--begin::Body-->
-                <div class="card-body d-flex align-items-end px-0 pt-3 pb-5">
-                    <!--begin::Chart-->
-                    <div id="chart-books_by_shelf" data-get='@json($data->shelfs)'
-                        class="h-325px w-100 min-h-auto ps-4 pe-6"></div>
-                    <!--end::Chart-->
-                </div>
-                <!--end: Card Body-->
-            </div>
-            <!--end::Chart widget 38-->
-            <div class="card mb-5 mb-xl-10 p-40">
-                <div class="card-header pt-7">
-                    <!--begin::Title-->
-                    <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bold text-gray-900">Calendario</span>
+                        <span class="card-label fw-bold text-gray-900">Libros Por Carrera</span>
                     </h3>
                     <!--end::Title-->
                 </div>
 
-                <div class="card-body pt-0">
-                    <div id="kt_docs_fullcalendar_selectable"></div>
+                <div class="card-body">
+                    <div id="chart-books_by_career" data-get='@json($data->careers)' style="height: 350px">
+                    </div>
                 </div>
             </div>
+
+            <!--end::Chart widget 38-->
+
+
         </div>
         <!--end::Col-->
 
@@ -151,17 +179,22 @@
     <!--end::Row-->
 
     @push('scripts')
+        <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+        <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+        <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+        <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+        <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 "use strict";
 
-                var KTChartsWidget38 = function() {
+                var ChartShelf = function() {
                     var chart = {
                         self: null,
                         rendered: false
                     };
 
-                    var initChart = function() {
+                    var initShelfChart = function() {
                         var element = document.getElementById("chart-books_by_shelf");
                         if (!element) {
                             console.error('Element not found');
@@ -191,9 +224,9 @@
 
                             // Mapear categorías y totales
                             const categories = data.map(item => item.shelf ||
-                            ''); // Asegúrate de usar el nombre correcto
+                                ''); // Asegúrate de usar el nombre correcto
                             const totals = data.map(item => item.total ||
-                            0); // Asegúrate de usar el nombre correcto
+                                0); // Asegúrate de usar el nombre correcto
 
                             if (categories.length === 0 || totals.length === 0) {
                                 console.error('Categories or totals are empty');
@@ -220,7 +253,7 @@
                                 plotOptions: {
                                     bar: {
                                         horizontal: false,
-                                        columnWidth: ['28%'],
+                                        columnWidth: ['90%'],
                                         borderRadius: 5,
                                         dataLabels: {
                                             position: "top" // top, center, bottom
@@ -342,138 +375,259 @@
 
                     return {
                         init: function() {
-                            initChart();
+                            initShelfChart();
 
                             KTThemeMode.on("kt.thememode.change", function() {
                                 if (chart.rendered) {
                                     chart.self.destroy();
                                 }
 
-                                initChart();
+                                initShelfChart();
                             });
                         }
                     }
                 }();
 
+                var ChartTypeBook = function() {
+                    var chart = {
+                        self: null,
+                        rendered: false
+                    };
+                    // Private methods
+                    var initTypeChart = function(chart) {
+                        var element = document.getElementById("chart-typeBook");
+                        var donated = $('#chart-typeBook').data('donated');
+                        var buyed = $('#chart-typeBook').data('buyed');
 
-                if (typeof module !== 'undefined') {
-                    module.exports = KTChartsWidget38;
-                }
+                        if (!element) {
+                            return;
+                        }
 
+                        var labelColor = KTUtil.getCssVariableValue('--bs-gray-800');
+                        var borderColor = KTUtil.getCssVariableValue('--bs-border-dashed-color');
+                        var maxValue = 18;
 
-
-
-                // CALENDARIO
-                // Class definition
-                var KTGeneralFullCalendarSelectDemos = function() {
-                    // Private functions
-
-                    var exampleSelect = function() {
-                        // Define variables
-                        var calendarEl = document.getElementById('kt_docs_fullcalendar_selectable');
-
-                        var calendar = new FullCalendar.Calendar(calendarEl, {
-                            headerToolbar: {
-                                left: 'prev,next today',
-                                center: 'title',
-                                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                        var options = {
+                            series: [{
+                                name: 'Cantidad',
+                                data: [donated, buyed]
+                            }],
+                            chart: {
+                                fontFamily: 'inherit',
+                                type: 'bar',
+                                height: 350,
+                                toolbar: {
+                                    show: false
+                                }
                             },
-                            // initialDate: '2020-09-12',
-                            locale: 'es',
-                            navLinks: true, // can click day/week names to navigate views
-                            selectable: true,
-                            selectMirror: true,
-
-                            // Create new event
-                            select: function(arg) {
-                                Swal.fire({
-                                    html: '<div class="mb-7">¿Agregar evento?</div><div class="fw-bolder mb-5">Event Name:</div><input type="text" class="form-control" name="event_name" />',
-                                    icon: "info",
-                                    showCancelButton: true,
-                                    buttonsStyling: false,
-                                    confirmButtonText: "Si, crear",
-                                    cancelButtonText: "No, regresar",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary",
-                                        cancelButton: "btn btn-active-light"
+                            plotOptions: {
+                                bar: {
+                                    borderRadius: 8,
+                                    horizontal: true,
+                                    distributed: true,
+                                    barHeight: 40,
+                                    dataLabels: {
+                                        position: 'bottom' // use 'bottom' for left and 'top' for right align(textAnchor)
                                     }
-                                }).then(function(result) {
-                                    if (result.value) {
-                                        var title = document.querySelector(
-                                            'input[name="event_name"]').value;
-                                        if (title) {
-                                            calendar.addEvent({
-                                                title: title,
-                                                start: arg.start,
-                                                end: arg.end,
-                                                allDay: arg.allDay
-                                            })
+                                }
+                            },
+                            dataLabels: { // Docs: https://apexcharts.com/docs/options/datalabels/
+                                enabled: true,
+                                textAnchor: 'start',
+                                offsetX: 0,
+                                formatter: function(val, opts) {
+                                    var Format = wNumb({
+                                        //prefix: '$',
+                                        //suffix: ',-',
+                                        thousand: ','
+                                    });
+
+                                    return Format.to(val);
+                                },
+                                style: {
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    align: 'left',
+                                }
+                            },
+                            legend: {
+                                show: false
+                            },
+                            colors: ['#3E97FF', '#F1416C'],
+                            xaxis: {
+                                categories: ["Donado", "Comprado"],
+                                labels: {
+                                    formatter: function(val) {
+                                        return val
+                                    },
+                                    style: {
+                                        colors: labelColor,
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        align: 'left'
+                                    }
+                                },
+                                axisBorder: {
+                                    show: false
+                                }
+                            },
+                            yaxis: {
+                                labels: {
+                                    formatter: function(val, opt) {
+                                        if (Number.isInteger(val)) {
+                                            var percentage = parseInt(val * 100 / maxValue).toString();
+                                            return val + ' - ' + percentage + '%';
+                                        } else {
+                                            return val;
                                         }
-                                        calendar.unselect()
-                                    } else if (result.dismiss === 'cancel') {
-                                        // Swal.fire({
-                                        //     text: "Event creation was declined!.",
-                                        //     icon: "error",
-                                        //     buttonsStyling: false,
-                                        //     confirmButtonText: "Ok, got it!",
-                                        //     customClass: {
-                                        //         confirmButton: "btn btn-primary",
-                                        //     }
-                                        // });
-                                    }
-                                });
+                                    },
+                                    style: {
+                                        colors: labelColor,
+                                        fontSize: '14px',
+                                        fontWeight: '600'
+                                    },
+                                    offsetY: 2,
+                                    align: 'left'
+                                }
                             },
-
-                            // Delete event
-                            eventClick: function(arg) {
-                                Swal.fire({
-                                    text: '¿Estás seguro de borrar este evento?',
-                                    icon: "warning",
-                                    showCancelButton: true,
-                                    buttonsStyling: false,
-                                    confirmButtonText: "Borrar",
-                                    cancelButtonText: "Cancelar",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary",
-                                        cancelButton: "btn btn-active-light"
+                            grid: {
+                                borderColor: borderColor,
+                                xaxis: {
+                                    lines: {
+                                        show: true
                                     }
-                                }).then(function(result) {
-                                    if (result.value) {
-                                        arg.event.remove()
-                                    } else if (result.dismiss === 'cancel') {
-                                        Swal.fire({
-                                            text: "El evento no se ha borrado!.",
-                                            icon: "error",
-                                            buttonsStyling: false,
-                                            confirmButtonText: "Cerrar!",
-                                            customClass: {
-                                                confirmButton: "btn btn-primary",
-                                            }
-                                        });
+                                },
+                                yaxis: {
+                                    lines: {
+                                        show: false
                                     }
-                                });
+                                },
+                                strokeDashArray: 4
                             },
-                            editable: true,
-                            dayMaxEvents: true, // allow "more" link when too many events
-                            events: []
-                        });
+                            tooltip: {
+                                style: {
+                                    fontSize: '12px'
+                                },
+                                y: {
+                                    formatter: function(val) {
+                                        return val;
+                                    }
+                                }
+                            }
+                        };
 
-                        calendar.render();
+                        chart.self = new ApexCharts(element, options);
+
+                        // Set timeout to properly get the parent elements width
+                        setTimeout(function() {
+                            chart.self.render();
+                            chart.rendered = true;
+                        }, 200);
                     }
 
+                    // Public methods
                     return {
-                        // Public Functions
                         init: function() {
-                            exampleSelect();
+                            initTypeChart(chart);
+
+                            // Update chart on theme mode change
+                            KTThemeMode.on("kt.thememode.change", function() {
+                                if (chart.rendered) {
+                                    chart.self.destroy();
+                                }
+
+                                initTypeChart(chart);
+                            });
                         }
-                    };
+                    }
                 }();
 
+                am5.ready(function() {
+                    // Create root element
+                    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+                    var root = am5.Root.new("chart-books_by_career");
+
+                    // Set themes
+                    // https://www.amcharts.com/docs/v5/concepts/themes/
+                    root.setThemes([
+                        am5themes_Animated.new(root)
+                    ]);
+
+                    // Create chart
+                    // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
+                    var chart = root.container.children.push(am5percent.PieChart.new(root, {
+                        layout: root.verticalLayout
+                    }));
+
+                    // Create series
+                    // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
+                    var series = chart.series.push(am5percent.PieSeries.new(root, {
+                        alignLabels: true,
+                        calculateAggregates: true,
+                        valueField: "value",
+                        categoryField: "category"
+                    }));
+
+                    series.slices.template.setAll({
+                        strokeWidth: 3,
+                        stroke: am5.color(0xffffff)
+                    });
+
+                    series.labelsContainer.set("paddingTop", 30);
+
+                    // Set up adapters for variable slice radius
+                    // https://www.amcharts.com/docs/v5/concepts/settings/adapters/
+                    series.slices.template.adapters.add("radius", function(radius, target) {
+                        var dataItem = target.dataItem;
+                        var high = series.getPrivate("valueHigh");
+
+                        if (dataItem) {
+                            var value = target.dataItem.get("valueWorking", 0);
+                            return radius * value / high;
+                        }
+                        return radius;
+                    });
+
+                    var element = document.getElementById('chart-books_by_career');
+                    var jsonData = JSON.parse(element.getAttribute('data-get')).careers;
+
+                    // Procesa los datos para el gráfico
+                    var chartData = jsonData.map(function(item) {
+                        return {
+                            value: item.total_books_general,
+                            category: item.name
+                        };
+                    });
+
+                    series.data.setAll(chartData);
+
+                    // Create legend
+                    // https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
+                    var legend = chart.children.push(am5.Legend.new(root, {
+                        centerX: am5.p50,
+                        x: am5.p50,
+                        marginTop: 15,
+                        marginBottom: 15
+                    }));
+
+                    legend.data.setAll(series.dataItems);
+
+                    // Play initial series animation
+                    // https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
+                    series.appear(1000, 100);
+                }); // end am5.ready()
+
+
+                if (typeof module !== 'undefined') {
+                    module.exports = ChartShelf;
+                    module.exports = ChartTypeBook;
+                }
 
                 KTUtil.onDOMContentLoaded(function() {
-                    KTChartsWidget38.init();
-                    KTGeneralFullCalendarSelectDemos.init();
+                    ChartShelf.init();
+                    ChartTypeBook.init();
                 });
+
             });
         </script>
     @endpush

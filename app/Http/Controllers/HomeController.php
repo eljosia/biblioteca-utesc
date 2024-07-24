@@ -50,6 +50,7 @@ class HomeController extends Controller
 
         $data->careers          = $this->showBooksByCareer();
         $data->shelfs           = $this->getBooksByShelf();
+        $data->typebook         = $this->typeBook();
 
         return view('pages.dashboards.index', compact('data'));
     }
@@ -353,5 +354,13 @@ class HomeController extends Controller
 
         // Devolver los datos como JSON
         return response()->json($booksByCategory);
+    }
+
+    public function typeBook(){
+        $data = (object)[];
+        $data->donated    = Book::where('donated', true)->count();
+        $data->buyed      = Book::where('donated', false)->count();
+
+        return $data;
     }
 }
